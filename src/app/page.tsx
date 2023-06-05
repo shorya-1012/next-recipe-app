@@ -6,6 +6,7 @@ const Home = async () => {
   return (
     <div className="bg-dark-body min-h-[90vh]">
       <Hero />
+      <p className="text-white">Hello</p>
     </div >
   )
 }
