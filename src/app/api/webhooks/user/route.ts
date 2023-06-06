@@ -26,12 +26,9 @@ async function handler(req: Request) {
     }
 
     const eventType: EventType = evt.type
-    if (eventType === "user.created") {
-        const { id, first_name, last_name, email_addresses } = evt.data
-        console.log(id)
-        console.log(first_name + ' ' + last_name)
-        console.log(email_addresses)
+    const { id, first_name, last_name, email_addresses } = evt.data
 
+    if (eventType === "user.created") {
         await prisma.user.create({
             data: {
                 id: id as string,
@@ -40,8 +37,15 @@ async function handler(req: Request) {
             }
         })
     }
+    else if (eventType === "user.deleted") {
+        await prisma.user.delete({
+            where: {
+                id: id as string
+            }
+        })
+    }
 
-    type EventType = "user.created" | "user.updated" | "*"
+    type EventType = "user.created" | "user.deleted" | "*"
 
     type Event = {
         data: Record<string, string | number>,
