@@ -18,9 +18,9 @@ const righteous = Righteous({
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
 
   return (
-    <ClerkProvider>
+    <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
       <html lang="en">
-        <body className={`${righteous.variable}  flex flex-col overflow-x-hidden`}>
+        <body className={`${righteous.variable} flex flex-col overflow-x-hidden`}>
           <Navbar />
           {children}
         </body>

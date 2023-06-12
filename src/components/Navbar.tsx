@@ -5,12 +5,14 @@ import { MdOutlineRestaurantMenu } from 'react-icons/md'
 import { MdMenu } from 'react-icons/md'
 import { useState } from "react"
 import Link from 'next/link'
-import { SignedOut, SignedIn, SignInButton, UserButton } from "@clerk/nextjs"
+import { SignedOut, SignedIn, SignInButton, useAuth } from "@clerk/nextjs"
 
 type Props = {
 }
 
 const Navbar = (props: Props) => {
+
+    const { userId } = useAuth()
 
     const [searchDropdown, setSearchDropdown] = useState(false)
 
@@ -38,12 +40,13 @@ const Navbar = (props: Props) => {
                     <div className='mr-5 md:mr-7 h-full'>
                         <SignedIn>
                             <div className='flex text-center h-full items-center'>
-                                <p className='hidden md:block mr-5'>Your Posts</p>
-                                <UserButton />
+                                <Link href={`user/${userId}`}><span>View Profile</span></Link>
                             </div>
                         </SignedIn>
                         <SignedOut>
-                            <SignInButton />
+                            <Link href={'/sign-in'}>
+                                <p>Sign In</p>
+                            </Link>
                         </SignedOut>
                     </div>
                     <button className='block sm:hidden mr-3'
@@ -64,9 +67,6 @@ const Navbar = (props: Props) => {
                         <div className='bg-dark-highlights flex items-center p-2 h-full'>
                             <FcSearch size={25} />
                         </div>
-                    </div>
-                    <div className='relative left-[25%] my-7'>
-                        <p>View Your Recipes</p>
                     </div>
                 </div>
             </div>

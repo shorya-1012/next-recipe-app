@@ -1,5 +1,3 @@
-import React from 'react'
-
 const Hero = () => {
     return (
         <section className='relative sm:z-0 h-[50vh] lg:h-[80vh]'>

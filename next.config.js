@@ -6,7 +6,14 @@ module.exports = {
             {
                 protocol: 'https',
                 hostname: 'www.pngmart.com'
+            },
+            {
+                protocol: 'https',
+                hostname: 'images.clerk.dev'
             }
         ]
+    },
+    experimental: {
+        serverActions: true
     }
 } 
