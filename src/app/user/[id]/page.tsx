@@ -1,7 +1,10 @@
 import { auth, clerkClient } from "@clerk/nextjs"
+import { prisma } from "@/lib/db"
 import Image from "next/image"
 import Link from "next/link"
 import SignOutButton from "@/components/SignOutButton"
+import NoPostPage from "@/components/NoPostPage"
+import UserPostPage from "./UserPostPage"
 
 const page = async ({ params }: { params: { id: string } }) => {
 
@@ -11,6 +14,19 @@ const page = async ({ params }: { params: { id: string } }) => {
         const { userId } = auth()
 
         const checkIfCurrUser = params.id === userId;
+
+        const userPosts = await prisma.post.findMany({
+            where: {
+                userId: params.id
+            },
+            include: {
+                category: true
+            }
+        })
+
+        const userPublicPosts = userPosts.filter(userPost => userPost.visibility === "PUBLIC");
+
+        const userPrivatePosts = userPosts.filter(userPost => userPost.visibility === "PRIVATE")
 
         return (
             <div className="min-h-screen w-screen bg-dark-body text-white flex flex-col items-center">
@@ -31,6 +47,7 @@ const page = async ({ params }: { params: { id: string } }) => {
                         </div>
                     </div>
                 </div>
+                {userPosts ? <UserPostPage checkIfCurrUser={checkIfCurrUser} userPublicPosts={userPublicPosts} userPrivatePosts={userPrivatePosts} /> : <NoPostPage />}
             </div>
         )
     } catch (error) {

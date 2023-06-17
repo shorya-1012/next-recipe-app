@@ -20,6 +20,7 @@
     "bcrypt": "^5.1.0",
     "cookie": "^0.5.0",
     "cookies-next": "^2.1.1",
+    "draft-js": "^0.11.7",
     "multiselect-react-dropdown": "^2.0.25",
     "next": "13.4.3",
     "postcss": "8.4.23",
@@ -27,12 +28,16 @@
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
     "react-icons": "^4.8.0",
+    "react-quill": "^2.0.0",
     "svix": "^1.4.12",
+    "sweetalert2": "^11.7.12",
     "tailwindcss": "3.3.2",
     "typescript": "5.0.4",
+    "uninstall": "^0.0.0",
     "uploadthing": "^4.1.1"
   },
   "devDependencies": {
+    "@types/react-draft-wysiwyg": "^1.13.4",
     "prisma": "^4.14.1"
   }
 }

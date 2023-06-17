@@ -25,13 +25,12 @@ model Post {
   user        User       @relation(fields: [userId], references: [id])
   userId      String
   imageURL    String
-  ingredients String
-  content     String
-  category    Category   @relation(fields: [categoryId], references: [id])
+  ingredients String     @db.Text
+  content     String     @db.Text
+  category    Category[]
   visibility  Visibility @default(PUBLIC)
-  categoryId  String
 
-  @@index([userId, categoryId])
+  @@index([userId])
 }
 
 model Category {
