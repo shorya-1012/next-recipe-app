@@ -147,7 +147,6 @@ const page = () => {
                             endpoint="imageUploader"
                             onClientUploadComplete={(res) => {
                                 setImageURL(res![0].fileUrl)
-                                // imageURL = res![0].fileUrl
                                 Swal.fire(
                                     'Sucess!',
                                     'Image Uploaded Successfully!',
@@ -171,7 +170,7 @@ const page = () => {
                             onChange={(e) => setVisibily(e.target.value)}
                             className="bg-dark-highlights w-[70%] lg:w-[50%] h-[35px] rounded">
                             <option value={""} disabled={true}>--Select--</option>
-                            <option value={'PUBIC'}>PUBLIC : Any one can view</option>
+                            <option value={'PUBLIC'}>PUBLIC : Any one can view</option>
                             <option value={"PRIVATE"}>Private : Only you can view</option>
                         </select>
                     </div>
