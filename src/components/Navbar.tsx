@@ -5,19 +5,26 @@ import { MdOutlineRestaurantMenu } from 'react-icons/md'
 import { MdMenu } from 'react-icons/md'
 import { useState } from "react"
 import Link from 'next/link'
-import { SignedOut, SignedIn, SignInButton, useAuth } from "@clerk/nextjs"
+import { SignedOut, SignedIn, useAuth } from "@clerk/nextjs"
+import { useRouter } from 'next/navigation'
 
-type Props = {
-}
 
-const Navbar = (props: Props) => {
+const Navbar = () => {
 
     const { userId } = useAuth()
-
+    const [searchParams, setSearchParams] = useState<string>('')
     const [searchDropdown, setSearchDropdown] = useState(false)
+    const router = useRouter()
+
+    const handleSearch = (e: any) => {
+        e.preventDefault()
+        setSearchDropdown(false)
+        const encodedSearchParams = encodeURI(searchParams)
+        router.push(`/recipes?q=${encodedSearchParams}`)
+    }
 
     return (
-        <div className='flex flex-col bg-dark-body text-white'>
+        <div className='flex flex-col bg-dark-body text-white overflow-x-hidden'>
             <header className="w-screen flex justify-between items-center h-[68px]">
                 <Link href={'/'}>
                     <div className='flex h-full items-center ms-2 '>
@@ -27,20 +34,24 @@ const Navbar = (props: Props) => {
                         <p className='text-xl font-righteous '>RecipeRealm</p>
                     </div>
                 </Link>
-                <div className='hidden sm:flex w-[40%] h-[60%] items-center rounded-2xl overflow-hidden shadow-xl '>
+                <form onSubmit={handleSearch} className='hidden sm:flex w-[40%] h-[60%] items-center rounded-2xl overflow-hidden shadow-xl '>
                     <input
                         className='w-full h-full px-3 text-md bg-[#30363d] text-white'
                         placeholder='Seach a recipe'
+                        value={searchParams}
+                        onChange={(e) => setSearchParams(e.target.value)}
                     />
-                    <div className='bg-dark-highlights flex items-start p-2 h-full'>
+                    <button className='bg-dark-highlights flex items-start p-2 h-full'>
                         <FcSearch size={25} />
-                    </div>
-                </div>
+                    </button>
+                </form>
                 <div className='flex'>
                     <div className='mr-5 md:mr-7 h-full'>
                         <SignedIn>
                             <div className='flex text-center h-full items-center'>
-                                <Link href={`user/${userId}`}><span>View Profile</span></Link>
+                                <Link href={`user/${userId}`}>
+                                    <span>View Profile</span>
+                                </Link>
                             </div>
                         </SignedIn>
                         <SignedOut>
@@ -62,11 +73,13 @@ const Navbar = (props: Props) => {
                     <div className='flex w-[80%] h-[40px] items-center rounded-2xl overflow-hidden shadow-xl'>
                         <input
                             className='w-full h-full px-3 text-md bg-dark-highlights text-white'
-                            placeholder='Seach a recipe'
+                            placeholder='Seach a recipe or user'
+                            value={searchParams}
+                            onChange={(e) => setSearchParams(e.target.value)}
                         />
-                        <div className='bg-dark-highlights flex items-center p-2 h-full'>
+                        <button onClick={handleSearch} className='bg-dark-highlights flex items-center p-2 h-full'>
                             <FcSearch size={25} />
-                        </div>
+                        </button>
                     </div>
                 </div>
             </div>

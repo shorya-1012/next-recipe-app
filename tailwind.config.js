@@ -18,7 +18,8 @@ module.exports = {
       }
     },
     fontFamily: {
-      righteous: ['var(--font-righteous)']
+      righteous: ['var(--font-righteous)'],
+      nunito: ['var(--font-nunito)']
     },
   },
   plugins: [],

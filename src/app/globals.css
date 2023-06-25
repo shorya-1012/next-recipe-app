@@ -8,3 +8,16 @@ textarea:focus,
 button:focus {
     outline: none;
 }
+
+ul {
+    list-style: decimal;
+}
+
+ol {
+    list-style: disc;
+}
+
+li {
+    margin-top: 10px;
+    padding-left: 8px;
+}

@@ -14,10 +14,11 @@ module.exports = {
             {
                 protocol: 'https',
                 hostname: 'uploadthing.com'
+            },
+            {
+                protocol: 'https',
+                hostname: 'img.clerk.com'
             }
         ]
     },
-    experimental: {
-        serverActions: true
-    }
 } 

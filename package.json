@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.19.0",
+    "@mantine/hooks": "^6.0.14",
     "@prisma/client": "^4.14.1",
+    "@tanstack/react-query": "^4.29.15",
     "@types/node": "20.2.1",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",

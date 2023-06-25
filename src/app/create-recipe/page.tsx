@@ -29,10 +29,13 @@ const page = () => {
     const [categories, setCategories] = useState<Category[]>([])
     const [visibility, setVisibily] = useState('PUBLIC')
     const [imageURL, setImageURL] = useState(" ")
+    const [disableForm, setDisableForm] = useState(false)
 
     useEffect(() => {
         const getCategories = async () => {
-            const res = await fetch('/api/get-post-categories')
+            const res = await fetch('/api/get-post-categories', {
+                cache: "no-cache"
+            })
             const data = await res.json()
             setCategories(data.categories)
         }
@@ -59,6 +62,8 @@ const page = () => {
             )
             return
         }
+
+        setDisableForm(true)
 
         const details: createPostParams = {
             title: postTitle,
@@ -93,7 +98,10 @@ const page = () => {
             <h1 className=" text-4xl md:text-6xl font-righteous font-semibold mt-8 mb-3">Create A Recipe</h1>
             <p className="font-semibold text-2xl mb-7">Create , Share and Learn</p>
             <div className="h-full w-screen">
-                <form onSubmit={handleFormSumbit} className="h-full w-full flex flex-col">
+                <form
+                    onSubmit={handleFormSumbit}
+                    className="h-full w-full flex flex-col"
+                >
                     <div className="flex flex-col my-5">
                         <label htmlFor="title" className=" text-xl mb-3">
                             Enter A Title For Your Post
@@ -148,7 +156,7 @@ const page = () => {
                             onClientUploadComplete={(res) => {
                                 setImageURL(res![0].fileUrl)
                                 Swal.fire(
-                                    'Sucess!',
+                                    'Success!',
                                     'Image Uploaded Successfully!',
                                     'success'
                                 )
@@ -174,8 +182,11 @@ const page = () => {
                             <option value={"PRIVATE"}>Private : Only you can view</option>
                         </select>
                     </div>
-                    <button className="border-2 border-gray-400 text-gray-400 rounded w-[180px] py-2 mb-5">
-                        Create Recipe
+                    <button
+                        className="border-2 border-gray-400 text-gray-400 rounded w-[180px] py-2 mb-5"
+                        disabled={disableForm}
+                    >
+                        {disableForm ? 'Posting...' : 'Create Post'}
                     </button>
                 </form>
             </div >

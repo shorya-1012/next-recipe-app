@@ -1,5 +1,6 @@
 import { type Post, type Category } from "@prisma/client";
 import UserPostCard from "@/components/UserPostCard";
+import Link from "next/link";
 
 type Props = {
     checkIfCurrUser: boolean;
@@ -15,7 +16,9 @@ const UserPostPage = (props: Props) => {
                 {
                     props.userPublicPosts.map(userPost => {
                         return (
-                            <UserPostCard key={userPost.postId} title={userPost.postTitle} imageURL={userPost.imageURL} categoryName={userPost.category[0].name} />
+                            <Link href={`/recipes/${userPost.postId}`}>
+                                <UserPostCard key={userPost.postId} title={userPost.postTitle} imageURL={userPost.imageURL} categoryName={userPost.category[0].name} />
+                            </Link>
                         )
                     })
                 }
@@ -26,7 +29,9 @@ const UserPostPage = (props: Props) => {
                     {
                         props.userPrivatePosts.map(userPost => {
                             return (
-                                <UserPostCard key={userPost.postId} title={userPost.postTitle} imageURL={userPost.imageURL} categoryName={userPost.category[0].name} />
+                                <Link href={`/recipes/${userPost.postId}`}>
+                                    <UserPostCard key={userPost.postId} title={userPost.postTitle} imageURL={userPost.imageURL} categoryName={userPost.category[0].name} />
+                                </Link>
                             )
                         })
                     }
