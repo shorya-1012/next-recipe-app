@@ -22,5 +22,5 @@ module.exports = {
       nunito: ['var(--font-nunito)']
     },
   },
-  plugins: [],
+  plugins: [require('tailwind-scrollbar-hide')],
 }

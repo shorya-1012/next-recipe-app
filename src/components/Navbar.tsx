@@ -25,7 +25,7 @@ const Navbar = () => {
 
     return (
         <div className='flex flex-col bg-dark-body text-white overflow-x-hidden'>
-            <header className="w-screen flex justify-between items-center h-[68px]">
+            <header className="w-screen flex justify-between items-center h-[68px] overflow-x-hidden">
                 <Link href={'/'}>
                     <div className='flex h-full items-center ms-2 '>
                         <div className='mx-2'>

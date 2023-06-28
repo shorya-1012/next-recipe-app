@@ -27,7 +27,7 @@ const page = async ({ searchParams }: { searchParams: { [key: string]: string | 
                     last_name: {
                         contains: searchQuery
                     }
-                }
+                },
             ]
         },
     })
@@ -50,6 +50,15 @@ const page = async ({ searchParams }: { searchParams: { [key: string]: string | 
                 {
                     ingredients: {
                         contains: searchQuery,
+                    }
+                },
+                {
+                    category: {
+                        some: {
+                            name: {
+                                contains: searchQuery
+                            }
+                        }
                     }
                 }
             ]

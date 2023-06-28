@@ -29,7 +29,7 @@ const page = async ({ params }: { params: { id: string } }) => {
         const userPrivatePosts = userPosts.filter(userPost => userPost.visibility === "PRIVATE")
 
         return (
-            <div className="min-h-screen w-screen bg-dark-body text-white flex flex-col items-center">
+            <div className="min-h-screen w-screen bg-dark-body text-white flex flex-col items-center overflow-x-hidden">
                 <div className="w-[800px] h-[300px] flex flex-col md:flex-row justify-center items-center ">
                     <div className="relative w-[150px] h-[150px] md:mr-10 my-3">
                         <Image priority className="object-cover rounded-[50%]" src={user.profileImageUrl} alt="user image" fill={true} />
