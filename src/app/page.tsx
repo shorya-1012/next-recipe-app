@@ -33,7 +33,7 @@ const Home = async () => {
           })
         }
       </div>
-      <div className="max-w-[1440px] flex flex-col items-center mx-auto">
+      <div className="max-w-[1440px] w-screen">
         <Posts initialPosts={initialPosts} />
       </div>
     </div >

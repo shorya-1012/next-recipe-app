@@ -46,7 +46,7 @@ const Posts = (props: Props) => {
     const posts = data?.pages.flatMap(page => page)
 
     return (
-        <div className="w-screen min-h-screen overflow-x-hidden bg-dark-body text-white flex flex-col items-center ">
+        <div className="w-full min-h-screen overflow-x-hidden bg-dark-body text-white flex flex-col items-center ms-1 md:ms-0">
             <div className="w-full md:w-[80%] ms-10 sm:mx-auto py-5 px-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                 {
                     posts?.map((userPost, i) => {

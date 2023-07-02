@@ -41,6 +41,7 @@ const page = async ({ searchParams }: { searchParams: { [key: string]: string | 
 
     const posts = await prisma.post.findMany({
         where: {
+            visibility: 'PUBLIC',
             OR: [
                 {
                     postTitle: {

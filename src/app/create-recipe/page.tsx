@@ -5,18 +5,13 @@ import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
 import { UploadButton } from "@uploadthing/react"
 import { OurFileRouter } from "../api/uploadthing/core"
-import { Category } from "@prisma/client"
+import { Category, Visibility } from "@prisma/client"
 import ReactQuill from "react-quill"
 import Swal from "sweetalert2"
+import { apiPostRequestValidator } from "@/lib/apiHandlers"
+import { z } from 'zod'
 
-type createPostParams = {
-    title: string;
-    selectedCategory: string;
-    ingredients: string;
-    content: string;
-    imageURL: string,
-    visibility: string
-}
+type ApiPostRequest = z.infer<typeof apiPostRequestValidator>
 
 const page = () => {
 
@@ -28,7 +23,7 @@ const page = () => {
     const [content, setContent] = useState('')
     const [categories, setCategories] = useState<Category[]>([])
     const [visibility, setVisibily] = useState('PUBLIC')
-    const [imageURL, setImageURL] = useState(" ")
+    const [imageURL, setImageURL] = useState("")
     const [disableForm, setDisableForm] = useState(false)
 
     useEffect(() => {
@@ -65,17 +60,17 @@ const page = () => {
 
         setDisableForm(true)
 
-        const details: createPostParams = {
+        const payload: ApiPostRequest = {
             title: postTitle,
             selectedCategory: selectedCategory,
             ingredients: ingredients,
             content: content,
             imageURL: imageURL,
-            visibility: visibility
+            visibility: visibility as Visibility
         }
         const res = await fetch('/api/create-recipe', {
             method: 'POST',
-            body: JSON.stringify(details)
+            body: JSON.stringify(payload)
         })
         if (res.ok) {
             Swal.fire(
@@ -83,6 +78,7 @@ const page = () => {
                 "Post created Successfully !",
                 "success"
             )
+            router.push('/')
         } else {
             Swal.fire(
                 "Error",
@@ -90,7 +86,6 @@ const page = () => {
                 "error"
             )
         }
-        router.push('/')
     }
 
     return (
