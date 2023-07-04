@@ -8,10 +8,10 @@ import { OurFileRouter } from "../api/uploadthing/core"
 import { Category, Visibility } from "@prisma/client"
 import ReactQuill from "react-quill"
 import Swal from "sweetalert2"
-import { apiPostRequestValidator } from "@/lib/apiHandlers"
-import { z } from 'zod'
-
-type ApiPostRequest = z.infer<typeof apiPostRequestValidator>
+import { type ApiPostRequest } from "@/lib/apiHandlers"
+import { useMutation } from "@tanstack/react-query"
+import axios, { AxiosError } from "axios"
+import { AiOutlineLoading } from 'react-icons/ai'
 
 const page = () => {
 
@@ -24,7 +24,56 @@ const page = () => {
     const [categories, setCategories] = useState<Category[]>([])
     const [visibility, setVisibily] = useState('PUBLIC')
     const [imageURL, setImageURL] = useState("")
-    const [disableForm, setDisableForm] = useState(false)
+
+    const { mutate: createPost, isLoading } = useMutation({
+        mutationFn: async () => {
+            const payload: ApiPostRequest = {
+                title: postTitle,
+                selectedCategory: selectedCategory,
+                ingredients: ingredients,
+                content: content,
+                imageURL: imageURL,
+                visibility: visibility as Visibility
+            }
+
+            const { data } = await axios.post('/api/create-recipe', payload)
+            return data
+        },
+        onError: (err) => {
+            if (err instanceof AxiosError) {
+                if (err.response?.status === 422) {
+                    Swal.fire(
+                        "Couldn't create post",
+                        "The title should contain between 3 and 25 characters",
+                        "error"
+                    )
+                    return
+                }
+                if (err.response?.status === 401) {
+                    Swal.fire(
+                        "Couldn't create post",
+                        "Your are not authorized to create a post",
+                        "error"
+                    )
+                    return
+                }
+                Swal.fire(
+                    "Couldn't create post",
+                    "Some error occured",
+                    "error"
+                )
+            }
+        },
+        onSuccess: (data) => {
+            console.log(data)
+            Swal.fire(
+                "Success",
+                "Post created Successfully !",
+                "success"
+            )
+            router.push(`/recipes/${data.id}`)
+        }
+    })
 
     useEffect(() => {
         const getCategories = async () => {
@@ -37,15 +86,10 @@ const page = () => {
         getCategories()
     }, [])
 
-    const handleFormSumbit = async (e: any) => {
+    const handleFormSumbit = async (e: React.FormEvent) => {
         e.preventDefault()
 
         if (!postTitle || !selectedCategory || !ingredients || !content) {
-            Swal.fire(
-                "Incomplete Details",
-                "Please fill the entire form",
-                "error"
-            )
             return
         }
 
@@ -58,34 +102,8 @@ const page = () => {
             return
         }
 
-        setDisableForm(true)
+        createPost()
 
-        const payload: ApiPostRequest = {
-            title: postTitle,
-            selectedCategory: selectedCategory,
-            ingredients: ingredients,
-            content: content,
-            imageURL: imageURL,
-            visibility: visibility as Visibility
-        }
-        const res = await fetch('/api/create-recipe', {
-            method: 'POST',
-            body: JSON.stringify(payload)
-        })
-        if (res.ok) {
-            Swal.fire(
-                "Success",
-                "Post created Successfully !",
-                "success"
-            )
-            router.push('/')
-        } else {
-            Swal.fire(
-                "Error",
-                "Some Error Occurred",
-                "error"
-            )
-        }
     }
 
     return (
@@ -179,9 +197,14 @@ const page = () => {
                     </div>
                     <button
                         className="border-2 border-gray-400 text-gray-400 rounded w-[180px] py-2 mb-5"
-                        disabled={disableForm}
+                        disabled={isLoading}
                     >
-                        {disableForm ? 'Posting...' : 'Create Post'}
+                        {isLoading ?
+                            <div className="flex h-full items-center justify-center py-1 pr-2 gap-2">
+                                <AiOutlineLoading className="animate-spin" size={20} />
+                                <p>Creating Post</p>
+                            </div>
+                            : 'Create Post'}
                     </button>
                 </form>
             </div >

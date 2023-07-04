@@ -9,3 +9,5 @@ export const apiPostRequestValidator = z.object({
     imageURL: z.string().url(),
     visibility: z.nativeEnum(Visibility)
 })
+
+export type ApiPostRequest = z.infer<typeof apiPostRequestValidator>

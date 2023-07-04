@@ -14,6 +14,13 @@ const page = async ({ params }: { params: { id: string } }) => {
         }
     })
 
+    if (!postDetails) {
+        return (
+            <div className="w-screen h-screen flex justify-center items-center text-3xl font-nunito text-center">
+                <h1>Post does not exist</h1>
+            </div>
+        )
+    }
     const { userId } = auth()
     const authorDetails = await clerkClient.users.getUser(postDetails?.userId!)
 
@@ -22,7 +29,7 @@ const page = async ({ params }: { params: { id: string } }) => {
     if (postDetails?.visibility === "PRIVATE") {
         if (!isAuthor) {
             return (
-                <div className="w-screen h-screen bg-dark-body text-white flex flex-col justify-center items-center">
+                <div className="w-screen h-screen overflow-hidden bg-dark-body text-white flex flex-col justify-center items-center">
                     <h1 className="text-3xl mb-3">401 Unautorized</h1>
                     <p>This is a private post</p>
                 </div>
@@ -31,7 +38,7 @@ const page = async ({ params }: { params: { id: string } }) => {
     }
 
     return (
-        <div className="min-h-screen overflow-x-hidden bg-dark-body text-white flex flex-col items-start font-nunito">
+        <div className="min-h-screen overflow-x-hidden white flex flex-col items-start font-nunito">
             <div className="flex flex-col md:flex-row mt-10">
                 <div id="image-holder" className="relative w-[350px] h-[200px] md:w-[420px] md:h-[300px] lg:w-[500px] lg:h-[350px] overflow-hidden mx-5 md:mx-10">
                     <Image className="object-cover rounded-lg" src={postDetails?.imageURL!} alt="recipe image" fill={true} priority />

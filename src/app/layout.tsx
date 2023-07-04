@@ -27,9 +27,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
       <html lang="en">
         <ReactQueryProvider>
-          <body className={`${righteous.variable} ${nunito.variable} font-sans flex flex-col overflow-x-hidden`}>
+          <body className={`${righteous.variable} ${nunito.variable} font-sans overflow-x-hidden bg-dark-body text-white`}>
             <Navbar />
-            {children}
+            <div className='h-full mx-auto'>
+              {children}
+            </div>
           </body>
         </ReactQueryProvider>
       </html>
