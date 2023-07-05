@@ -1,5 +1,5 @@
 import './globals.css'
-import Navbar from '@/components/Navbar'
+import Navbar from '@/components/navbar-ui/Navbar'
 import { Righteous, Nunito } from 'next/font/google'
 import { ClerkProvider } from '@clerk/nextjs'
 import ReactQueryProvider from '@/ReactQueryProvider'

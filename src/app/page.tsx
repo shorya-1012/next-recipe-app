@@ -24,7 +24,7 @@ const Home = async () => {
         {
           postCategories.map(postCategory => {
             return (
-              <Link href={`/recipes?q=${postCategory.name}`}>
+              <Link href={`/search?q=${postCategory.name}`}>
                 <div key={postCategory.id} className=" min-w-max rounded-xl font-nunito font-semibold bg-blue-600 text-white px-3 py-1 mt-8" >
                   <span>{postCategory.name} </span>
                 </div>

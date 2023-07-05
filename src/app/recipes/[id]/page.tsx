@@ -55,7 +55,7 @@ const page = async ({ params }: { params: { id: string } }) => {
                     </Link>
                     <div className="flex items-center mt-3">
                         <span className="mr-3 text-xl">Categories : </span>
-                        <Link href={`/recipes?q=${postDetails?.category[0].name}`}>
+                        <Link href={`/search?q=${postDetails?.category[0].name}`}>
                             <p className="rounded-full w-max py-1 px-2 text-md bg-blue-500">{postDetails?.category[0].name}</p>
                         </Link>
                     </div>
