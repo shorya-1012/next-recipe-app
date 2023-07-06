@@ -12,11 +12,12 @@ datasource db {
 }
 
 model User {
-  id         String @unique
-  first_name String
-  last_name  String
-  role       Role   @default(USER)
-  posts      Post[]
+  id              String  @unique
+  first_name      String
+  last_name       String
+  role            Role    @default(USER)
+  posts           Post[]
+  profileImageUrl String? @default(uuid())
 }
 
 model Post {
