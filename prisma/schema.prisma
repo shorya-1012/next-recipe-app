@@ -17,7 +17,7 @@ model User {
   last_name       String
   role            Role    @default(USER)
   posts           Post[]
-  profileImageUrl String? @default(uuid())
+  profileImageUrl String?
 }
 
 model Post {
