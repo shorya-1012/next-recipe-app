@@ -1,10 +1,7 @@
 "use client"
-import "@uploadthing/react/styles.css"
 import "react-quill/dist/quill.snow.css"
 import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
-import { UploadButton } from "@uploadthing/react"
-import { OurFileRouter } from "../api/uploadthing/core"
 import { Category, Visibility } from "@prisma/client"
 import ReactQuill from "react-quill"
 import Swal from "sweetalert2"
@@ -12,6 +9,8 @@ import { type ApiPostRequest } from "@/lib/apiHandlers"
 import { useMutation } from "@tanstack/react-query"
 import axios, { AxiosError } from "axios"
 import { AiOutlineLoading } from 'react-icons/ai'
+import ImageUploadButon from "@/components/ImageUploadButon"
+import Image from "next/image"
 
 const page = () => {
 
@@ -163,26 +162,20 @@ const page = () => {
                         />
                     </div>
                     <div className="mt-16 md:mt-20 mb-8 flex flex-col items-start">
-                        <label className="text-white mb-4 text-xl">Upload an Image of your Recipe</label>
-                        <UploadButton<OurFileRouter>
-                            endpoint="imageUploader"
-                            onClientUploadComplete={(res) => {
-                                setImageURL(res![0].fileUrl)
-                                Swal.fire(
-                                    'Success!',
-                                    'Image Uploaded Successfully!',
-                                    'success'
-                                )
-                            }}
-                            onUploadError={(error: Error) => {
-                                const err = error.message
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Oops...',
-                                    text: err
-                                })
-                            }}
-                        />
+                        {
+                            !imageURL ?
+                                <ImageUploadButon setImageURL={setImageURL} /> :
+                                <div className="relative overflow-hidden w-[350px] h-[250px] my-8 bg-dark-highlights">
+                                    <Image
+                                        src={imageURL}
+                                        alt="uploaded image"
+                                        fill={true}
+                                        sizes="100%"
+                                        className=" object-cover"
+                                        placeholder="blur"
+                                    />
+                                </div>
+                        }
                     </div>
                     <div className="flex flex-col mb-10">
                         <label className=" text-xl mb-3">Select who can view Recipe</label>
@@ -191,8 +184,8 @@ const page = () => {
                             onChange={(e) => setVisibily(e.target.value)}
                             className="bg-dark-highlights w-[70%] lg:w-[50%] h-[35px] rounded">
                             <option value={""} disabled={true}>--Select--</option>
-                            <option value={'PUBLIC'}>PUBLIC : Any one can view</option>
-                            <option value={"PRIVATE"}>Private : Only you can view</option>
+                            <option className="px-2 py-1" value={'PUBLIC'}>Public : Any one can view</option>
+                            <option className="px-3 py-2" value={"PRIVATE"}>Private : Only you can view</option>
                         </select>
                     </div>
                     <button
