@@ -26,7 +26,7 @@ async function handler(req: Request) {
     }
 
     const eventType: EventType = evt.type
-    const { id, first_name, last_name, imageUrl } = evt.data
+    const { id, first_name, last_name, image_url } = evt.data
 
     if (eventType === "user.created") {
         await prisma.user.create({
@@ -34,7 +34,7 @@ async function handler(req: Request) {
                 id: id as string,
                 first_name: first_name as string,
                 last_name: last_name as string,
-                profileImageUrl: imageUrl as string
+                profileImageUrl: image_url as string
             }
         })
     }
