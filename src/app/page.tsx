@@ -18,7 +18,7 @@ const Home = async () => {
   const postCategories = await prisma.category.findMany()
 
   return (
-    < div className="bg-dark-body text-white min-h-[90vh] flex flex-col items-center overflow-x-hidden" >
+    < div className="bg-dark-body text-white min-h-screen flex flex-col items-center overflow-x-hidden" >
       <Hero />
       < div className="w-[80%] flex gap-3 overflow-x-scroll lg:justify-center scroll-smooth scrollbar-hide" >
         {
@@ -33,9 +33,7 @@ const Home = async () => {
           })
         }
       </div>
-      <div className="max-w-[1440px] w-screen">
-        <Posts initialPosts={initialPosts} />
-      </div>
+      <Posts />
     </div >
   )
 }

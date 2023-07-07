@@ -48,8 +48,8 @@ const page = async ({ params }: { params: { id: string } }) => {
                         <Image priority className="object-cover rounded-[50%]" src={user?.profileImageUrl || ''} alt="user image" fill={true} />
                     </div>
                     <div className="text-center">
-                        <h1 className="text-3xl mb-2">{user?.first_name + ' ' + user?.last_name}</h1>
-                        <div className={`${isCurrentUser ? 'flex' : 'hidden'} w-[100%] flex justify-center`}>
+                        <h1 className="text-3xl my-2">{user?.first_name + ' ' + user?.last_name}</h1>
+                        <div className={`${isCurrentUser ? 'flex' : 'hidden'} w-[100%] flex justify-center mt-5`}>
                             <Link href={'/create-recipe'}>
                                 <div className="w-[120px] h-[40px] flex justify-center items-center rounded-lg bg-blue-500">
                                     Create Post

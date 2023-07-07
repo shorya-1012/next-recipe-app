@@ -1,7 +1,7 @@
 import FavouritePostButton from "@/components/FavouritePostButton"
 import CommenSection from "@/components/comment-section-ui/CommenSection"
 import { prisma } from "@/lib/db"
-import { auth, clerkClient } from "@clerk/nextjs"
+import { auth } from "@clerk/nextjs"
 import Image from "next/image"
 import Link from "next/link"
 

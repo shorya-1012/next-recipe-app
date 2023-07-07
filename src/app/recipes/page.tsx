@@ -6,7 +6,8 @@ import { useEffect, useRef } from "react"
 import { useIntersection } from "@mantine/hooks"
 import CardLoading from "@/components/CardLoading"
 
-const Post = () => {
+
+const page = () => {
 
     const { data, fetchNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery(
         ['query'],
@@ -79,4 +80,4 @@ const Post = () => {
     )
 }
 
-export default Post
+export default page

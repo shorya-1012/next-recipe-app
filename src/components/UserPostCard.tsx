@@ -8,9 +8,9 @@ type Props = {
 
 const UserPostCard = (props: Props) => {
     return (
-        <div className="rounded w-[260px] h-[310px] m-4 bg-dark-highlights text-white
+        <div className="rounded w-[315px] md:w-[300px] h-[310px] m-4 bg-dark-highlights text-white
         hover:-translate-y-4 duration-500 hover:shadow-xl hover:shadow-gray-700">
-            <div className="relative h-[180px] w-full">
+            <div className="relative h-[200px] md:h-[200px] w-full">
                 <Image src={props.imageURL} alt="recipe-image" fill={true} className="object-cover rounded" />
             </div>
             <div className="flex flex-col mt-2 mb-5 pt-1 pb-1 px-3 cursor-pointer">

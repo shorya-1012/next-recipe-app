@@ -1,8 +1,8 @@
 
 const CardLoading = () => {
     return (
-        <div className="rounded-xl w-[260px] m-4 bg-dark-highlights text-white animate-pulse">
-            <div className="relative h-[180px] w-full rounded-xl bg-gray-600">
+        <div className="rounded w-[315px] md:w-[300px] h-[310px] m-4 bg-dark-highlights text-white animate-pulse">
+            <div className="relative h-[200px] w-full rounded bg-gray-600">
             </div>
             <div className="flex flex-col my-3 pt-1 pb-2 px-3 cursor-pointer">
                 <div className="text-xl h-[20px] w-[140px] rounded-xl bg-gray-600 font-semibold mb-2"></div>

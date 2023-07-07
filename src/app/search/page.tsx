@@ -1,6 +1,5 @@
 import { prisma } from "@/lib/db"
 import UserProfileCard from "@/components/UserProfileCard"
-import { clerkClient } from "@clerk/nextjs"
 import Link from "next/link"
 import UserPostCard from "@/components/UserPostCard"
 
@@ -67,19 +66,20 @@ const page = async ({ searchParams }: { searchParams: { [key: string]: string | 
             {users.length !== 0 &&
                 <h2 className="text-xl font-nunito font-semibold mt-10">Users : </h2>
             }
-            <div className="w-screen md:w-[80%] mx-auto py-5 px-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-items-center"> {
-                users.map(user => {
-                    return (
-                        <Link href={`/user/${user.id}`} >
-                            <UserProfileCard userName={user.first_name + ' ' + user.last_name} imgageURL={user.profileImageUrl || ''} />
-                        </Link>
-                    )
-                })
-            }
+            <div className="w-full md:w-full lg:w-[90%] sm:mx-auto py-5 px-5 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 justify-items-center">
+                {
+                    users.map(user => {
+                        return (
+                            <Link href={`/user/${user.id}`} >
+                                <UserProfileCard userName={user.first_name + ' ' + user.last_name} imgageURL={user.profileImageUrl || ''} />
+                            </Link>
+                        )
+                    })
+                }
             </div>
             <div className={`${posts.length !== 0 ? '' : 'hidden'} w-full flex flex-col items-center mt-5`}>
                 <h3 className="text-xl font-nunito font-semibold">Posts</h3>
-                <div className=" w-full md:w-[80%] ms-10 sm:mx-auto py-5 px-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="w-full md:w-[95%] lg:w-[90%] sm:mx-auto py-5 px-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center">
                     {
                         posts.map(post => {
                             return (
