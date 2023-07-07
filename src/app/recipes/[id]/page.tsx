@@ -1,3 +1,4 @@
+import CommenSection from "@/components/comment-section-ui/CommenSection"
 import { prisma } from "@/lib/db"
 import { auth, clerkClient } from "@clerk/nextjs"
 import Image from "next/image"
@@ -22,7 +23,6 @@ const page = async ({ params }: { params: { id: string } }) => {
         )
     }
     const { userId } = auth()
-    const authorDetails = await clerkClient.users.getUser(postDetails?.userId!)
 
     const isAuthor = userId === postDetails?.userId
 
@@ -45,12 +45,12 @@ const page = async ({ params }: { params: { id: string } }) => {
                 </div>
                 <div className="flex flex-col justify-start mx-5 mt-5">
                     <h1 className="text-2xl font-semibold lg:text-5xl md:my-5">{postDetails?.postTitle}</h1>
-                    <Link href={`/user/${authorDetails.id}`}>
+                    <Link href={`/user/${postDetails.user.id}`}>
                         <div className="flex items-center mt-5 md:mb-5">
                             <div className="w-[45px] relative h-[45px] rounded-[50%] overflow-hidden mr-3">
-                                <Image src={authorDetails.imageUrl} alt="profile image" fill={true} className=" object-cover" />
+                                <Image src={postDetails.user.profileImageUrl || ''} alt="profile image" fill={true} className=" object-cover" />
                             </div>
-                            <span className="text-xl">{authorDetails.firstName + ' ' + authorDetails.lastName}</span>
+                            <span className="text-xl">{postDetails.user.first_name + ' ' + postDetails.user.last_name}</span>
                         </div>
                     </Link>
                     <div className="flex items-center mt-3">
@@ -71,6 +71,12 @@ const page = async ({ params }: { params: { id: string } }) => {
                     <div className="text-lg pt-5 ms-7" dangerouslySetInnerHTML={{ __html: postDetails?.ingredients! }} />
                 </div>
             </section>
+            {/* CommenSection */}
+            <div className="w-full">
+                <hr className="w-screen h-px bg-white" />
+                {/* @ts-expect-error Server Component */}
+                <CommenSection postId={postDetails.postId} />
+            </div>
         </div>
     )
 }

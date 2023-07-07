@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { auth } from "@clerk/nextjs"
-import { apiPostRequestValidator } from "@/lib/apiHandlers"
+import { CreatePostRequestValidator } from "@/lib/apiValidators"
 import { fromZodError } from 'zod-validation-error'
 import { ZodError } from "zod"
 import z from "zod"
@@ -14,7 +14,7 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'You are unauthorized to create a post' }, { status: 401 })
         }
 
-        const { title, imageURL, content, ingredients, visibility, selectedCategory } = apiPostRequestValidator.parse(body)
+        const { title, imageURL, content, ingredients, visibility, selectedCategory } = CreatePostRequestValidator.parse(body)
 
         const post = await prisma.post.create({
             data: {

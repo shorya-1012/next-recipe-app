@@ -12,12 +12,14 @@ datasource db {
 }
 
 model User {
-  id              String  @unique
+  id              String        @unique
   first_name      String
   last_name       String
-  role            Role    @default(USER)
+  role            Role          @default(USER)
   posts           Post[]
   profileImageUrl String?
+  Comment         Comment[]
+  CommentLike     CommentLike[]
 }
 
 model Post {
@@ -30,8 +32,32 @@ model Post {
   content     String     @db.Text
   category    Category[]
   visibility  Visibility @default(PUBLIC)
+  Comment     Comment[]
 
   @@index([userId])
+}
+
+model Comment {
+  commentId String   @id @default(cuid())
+  text      String   @db.Text
+  createdAt DateTime @default(now())
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  String
+  post      Post     @relation(fields: [postsId], references: [postId])
+  postsId   String
+
+  replyToId   String?
+  relplyTo    Comment?      @relation("ReplyTo", fields: [replyToId], references: [commentId], onDelete: NoAction, onUpdate: NoAction)
+  replies     Comment[]     @relation("ReplyTo")
+  CommentLike CommentLike[]
+}
+
+model CommentLike {
+  id               String   @id @default(cuid())
+  user             User     @relation(fields: [userId], references: [id])
+  Comment          Comment? @relation(fields: [commentCommentId], references: [commentId])
+  commentCommentId String?
+  userId           String
 }
 
 model Category {

@@ -32,13 +32,6 @@ const page = async ({ searchParams }: { searchParams: { [key: string]: string | 
         },
     })
 
-    const usersWithImage = users.length !== 0 ? await Promise.all(users.map(async (user) => {
-        const { imageUrl } = await clerkClient.users.getUser(user.id)
-        return (
-            { ...user, imageUrl }
-        )
-    })) : []
-
     const posts = await prisma.post.findMany({
         where: {
             visibility: 'PUBLIC',
@@ -71,14 +64,14 @@ const page = async ({ searchParams }: { searchParams: { [key: string]: string | 
 
     return (
         <div className="w-screen min-h-screen overflow-x-hidden bg-dark-body text-white flex flex-col items-center ">
-            {usersWithImage.length !== 0 &&
+            {users.length !== 0 &&
                 <h2 className="text-xl font-nunito font-semibold mt-10">Users : </h2>
             }
             <div className="w-screen md:w-[80%] mx-auto py-5 px-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-items-center"> {
-                usersWithImage.map(user => {
+                users.map(user => {
                     return (
                         <Link href={`/user/${user.id}`} >
-                            <UserProfileCard userName={user.first_name + ' ' + user.last_name} imgageURL={user.imageUrl} />
+                            <UserProfileCard userName={user.first_name + ' ' + user.last_name} imgageURL={user.profileImageUrl || ''} />
                         </Link>
                     )
                 })

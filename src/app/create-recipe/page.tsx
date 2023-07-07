@@ -5,7 +5,7 @@ import { useState, useEffect } from "react"
 import { Category, Visibility } from "@prisma/client"
 import ReactQuill from "react-quill"
 import Swal from "sweetalert2"
-import { type ApiPostRequest } from "@/lib/apiHandlers"
+import { type CreatePostPayload } from "@/lib/apiValidators"
 import { useMutation } from "@tanstack/react-query"
 import axios, { AxiosError } from "axios"
 import { AiOutlineLoading } from 'react-icons/ai'
@@ -26,7 +26,7 @@ const page = () => {
 
     const { mutate: createPost, isLoading } = useMutation({
         mutationFn: async () => {
-            const payload: ApiPostRequest = {
+            const payload: CreatePostPayload = {
                 title: postTitle,
                 selectedCategory: selectedCategory,
                 ingredients: ingredients,
