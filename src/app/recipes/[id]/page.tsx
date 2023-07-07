@@ -1,3 +1,4 @@
+import FavouritePostButton from "@/components/FavouritePostButton"
 import CommenSection from "@/components/comment-section-ui/CommenSection"
 import { prisma } from "@/lib/db"
 import { auth, clerkClient } from "@clerk/nextjs"
@@ -11,7 +12,8 @@ const page = async ({ params }: { params: { id: string } }) => {
         },
         include: {
             user: true,
-            category: true
+            category: true,
+            FavouritedPost: true
         }
     })
 
@@ -58,6 +60,9 @@ const page = async ({ params }: { params: { id: string } }) => {
                         <Link href={`/search?q=${postDetails?.category[0].name}`}>
                             <p className="rounded-full w-max py-1 px-2 text-md bg-blue-500">{postDetails?.category[0].name}</p>
                         </Link>
+                    </div>
+                    <div className="mt-3">
+                        <FavouritePostButton postFavourites={postDetails.FavouritedPost} postId={postDetails.postId} />
                     </div>
                 </div>
             </div>

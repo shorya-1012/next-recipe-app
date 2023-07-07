@@ -24,7 +24,17 @@ export const CommentUnlikeValidator = z.object({
     id: z.string()
 })
 
+export const PostFavouriteValidator = z.object({
+    postId: z.string()
+})
+
+export const PostUnFavouriteValidator = z.object({
+    id: z.string()
+})
+
 export type CreateCommentPayload = z.infer<typeof CreateCommentValidator>
 export type CreatePostPayload = z.infer<typeof CreatePostRequestValidator>
 export type CommentLikePayload = z.infer<typeof CommentLikeValidator>
-export type CommentUnlikePayload = z.infer<typeof CommentUnlikeValidator> 
+export type CommentUnlikePayload = z.infer<typeof CommentUnlikeValidator>
+export type PostFavouritePayload = z.infer<typeof PostFavouriteValidator>
+export type PostUnfavouritePayload = z.infer<typeof PostUnFavouriteValidator> 
