@@ -29,7 +29,6 @@ const Post = () => {
     })
 
     useEffect(() => {
-        console.log(entry)
         if (entry?.isIntersecting) {
             fetchNextPage()
         }

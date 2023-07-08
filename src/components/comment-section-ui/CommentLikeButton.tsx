@@ -1,6 +1,5 @@
 'use client'
 import { FcLikePlaceholder, FcLike } from 'react-icons/fc'
-import { AiOutlineLoading } from 'react-icons/ai'
 import { useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import axios, { AxiosError } from 'axios'
@@ -18,13 +17,14 @@ type Props = {
 const CommentLikeButton = ({ commentId, commentLikes }: Props) => {
 
     const { userId } = useAuth()
+    const [likeCount, setLikeCount] = useState(commentLikes.length)
     const isLiked = commentLikes.filter(comment => comment.userId === userId)
     const [liked, setLiked] = useState(isLiked.length !== 0)
     const router = useRouter()
 
-    const { mutate: handleCommentLike, isLoading } = useMutation({
+    const { mutate: handleCommentLike } = useMutation({
         mutationFn: async () => {
-            if (!liked) {
+            if (liked) {
                 const payload: CommentLikePayload = {
                     commentCommentId: commentId
                 }
@@ -40,10 +40,12 @@ const CommentLikeButton = ({ commentId, commentLikes }: Props) => {
         },
         onError: (err) => {
             if (err instanceof AxiosError) {
+                setLiked(prev => !prev)
+                liked ? setLikeCount(prev => prev + 1) : setLikeCount(prev => prev - 1)
                 if (err.response?.status === 422) {
                     Swal.fire(
-                        "Couldn't create post",
-                        "The title should contain between 3 and 25 characters",
+                        "Couldn't Like comment",
+                        "Some error occured",
                         "error"
                     )
                     return
@@ -53,24 +55,31 @@ const CommentLikeButton = ({ commentId, commentLikes }: Props) => {
                     return
                 }
                 Swal.fire(
-                    "Couldn't create post",
+                    "Couldn't Like comment",
                     "Some error occured",
                     "error"
                 )
             }
         },
         onSuccess: () => {
-            setLiked(prev => !prev)
             router.refresh()
         }
     })
 
     return (
         <div className="flex items-center hover:font-semibold mt-3 text-sm text-gray-500 gap-1">
-            <button onClick={() => handleCommentLike()}>
-                {isLoading ? <AiOutlineLoading className='animate-spin' /> : liked ? <FcLike /> : <FcLikePlaceholder />}
+            <button onClick={() => {
+                if (!userId) {
+                    router.push('/sign-in')
+                    return
+                }
+                setLiked(prev => !prev)
+                liked ? setLikeCount(prev => prev - 1) : setLikeCount(prev => prev + 1)
+                handleCommentLike()
+            }}>
+                {liked ? <FcLike /> : <FcLikePlaceholder />}
             </button>
-            <p>{commentLikes.length}</p>
+            <p>{likeCount}</p>
         </div>
     )
 }

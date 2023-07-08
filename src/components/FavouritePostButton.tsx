@@ -7,7 +7,6 @@ import axios, { AxiosError } from "axios"
 import Swal from "sweetalert2"
 import { FavouritedPost } from "@prisma/client"
 import { HiOutlineStar, HiStar } from 'react-icons/hi'
-import { AiOutlineLoading } from "react-icons/ai"
 import { PostFavouritePayload, PostUnfavouritePayload } from "@/lib/apiValidators"
 
 type Props = {
@@ -19,11 +18,12 @@ const FavouritePostButton = ({ postId, postFavourites }: Props) => {
     const { userId } = useAuth()
     const router = useRouter()
     const isFavourited = postFavourites.filter(favoirite => favoirite.userId === userId)
+    const [favouritesCount, setFavoritesCount] = useState(postFavourites.length)
     const [favoirite, setFavourited] = useState(isFavourited.length !== 0)
 
-    const { mutate: handleCommentLike, isLoading } = useMutation({
+    const { mutate: handlePostFavourite } = useMutation({
         mutationFn: async () => {
-            if (!favoirite) {
+            if (favoirite) {
                 const payload: PostFavouritePayload = {
                     postId: postId
                 }
@@ -39,10 +39,12 @@ const FavouritePostButton = ({ postId, postFavourites }: Props) => {
         },
         onError: (err) => {
             if (err instanceof AxiosError) {
+                setFavourited(prev => !prev)
+                favoirite ? setFavoritesCount(prev => prev + 1) : setFavoritesCount(prev => prev - 1)
                 if (err.response?.status === 422) {
                     Swal.fire(
-                        "Couldn't create post",
-                        "The title should contain between 3 and 25 characters",
+                        "Couldn't favourite post",
+                        "Some error occured",
                         "error"
                     )
                     return
@@ -52,24 +54,31 @@ const FavouritePostButton = ({ postId, postFavourites }: Props) => {
                     return
                 }
                 Swal.fire(
-                    "Couldn't create post",
+                    "Couldn't favourite post",
                     "Some error occured",
                     "error"
                 )
             }
         },
         onSuccess: () => {
-            setFavourited(prev => !prev)
             router.refresh()
         }
     })
 
     return (
         <div className="flex items-center hover:font-semibold mt-2 gap-1">
-            <button onClick={() => handleCommentLike()}>
-                {isLoading ? <AiOutlineLoading className='animate-spin' /> : favoirite ? <HiStar fill="yellow" size={25} /> : <HiOutlineStar size={25} />}
+            <button onClick={() => {
+                if (!userId) {
+                    router.push('/sign-in')
+                    return
+                }
+                setFavourited(prev => !prev)
+                favoirite ? setFavoritesCount(prev => prev - 1) : setFavoritesCount(prev => prev + 1)
+                handlePostFavourite()
+            }}>
+                {favoirite ? <HiStar fill="yellow" size={25} /> : <HiOutlineStar size={25} />}
             </button>
-            <p className="text-lg text-gray-200">{postFavourites.length} Favourites</p>
+            <p className="text-lg text-gray-200">{favouritesCount} Favourites</p>
         </div>
     )
 }
