@@ -79,10 +79,12 @@ const UserProfileButton = ({ userId }: Props) => {
                         </div>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                        <div className="hover:text-gray-500 w-full h-full flex items-center gap-3 my-1">
-                            <TiTick size={20} />
-                            <span className=" text-base font-nunito">Following</span>
-                        </div>
+                        <Link href={'/following'}>
+                            <div className="hover:text-gray-500 w-full h-full flex items-center gap-3 my-1">
+                                <TiTick size={20} />
+                                <span className=" text-base font-nunito">Following</span>
+                            </div>
+                        </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                         <button

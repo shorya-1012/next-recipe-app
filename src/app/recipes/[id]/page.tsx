@@ -42,8 +42,8 @@ const page = async ({ params }: { params: { id: string } }) => {
     return (
         <div className="min-h-screen overflow-x-hidden white flex flex-col items-start font-nunito">
             <div className="flex flex-col md:flex-row mt-10">
-                <div id="image-holder" className="relative w-[330px] h-[200px] md:w-[420px] md:h-[300px] lg:w-[500px] lg:h-[350px] overflow-hidden mx-5 md:mx-10">
-                    <Image className="object-cover rounded-lg" src={postDetails?.imageURL!} alt="recipe image" fill={true} priority />
+                <div className="relative w-[330px] h-[200px] md:w-[420px] md:h-[300px] lg:w-[500px] lg:h-[350px] rounded-xl overflow-hidden mx-5 md:mx-10">
+                    <Image className="object-cover rounded-xl" src={postDetails?.imageURL!} alt="recipe image" fill={true} priority />
                 </div>
                 <div className="flex flex-col justify-start mx-5 mt-5">
                     <h1 className="text-2xl font-semibold lg:text-5xl md:my-5">{postDetails?.postTitle}</h1>
