@@ -44,7 +44,7 @@ const Post = () => {
     return (
         <div className="w-full min-h-screen overflow-x-hidden flex flex-col items-center py-5 mt-3 ms-1 md:ms-0">
             {isLoading &&
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-items-center py-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                     <CardLoading />
                     <CardLoading />
                     <CardLoading />
@@ -85,7 +85,7 @@ const Post = () => {
                 }
             </div>
             {isFetchingNextPage &&
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center py-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                     <CardLoading />
                     <CardLoading />
                     <CardLoading />

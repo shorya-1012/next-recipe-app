@@ -73,10 +73,12 @@ const UserProfileButton = ({ userId }: Props) => {
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                        <div className="hover:text-gray-500 w-full h-full flex items-center gap-3 my-1 ">
-                            <AiFillHeart size={15} />
-                            <span className=" text-base font-nunito">Favourites</span>
-                        </div>
+                        <Link href={'/favourite-posts'}>
+                            <div className="hover:text-gray-500 w-full h-full flex items-center gap-3 my-1 ">
+                                <AiFillHeart size={15} />
+                                <span className=" text-base font-nunito">Favourites</span>
+                            </div>
+                        </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                         <Link href={'/following'}>
