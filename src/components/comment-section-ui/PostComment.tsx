@@ -11,8 +11,10 @@ import { AiOutlineLoading } from "react-icons/ai"
 import { useMutation } from "@tanstack/react-query"
 import { CreateCommentPayload } from "@/lib/apiValidators"
 import axios, { AxiosError } from "axios"
-import Swal from "sweetalert2"
 import CommentLikeButton from "./CommentLikeButton"
+import { useToast } from "../ui/use-toast"
+import { Toast } from "../ui/toast"
+
 
 type ExtendedComment = Comment & {
     author: User;
@@ -29,6 +31,7 @@ const PostComment = ({ comment }: Props) => {
     const [reply, setReply] = useState('')
     const [isReplying, setIsReplying] = useState(false)
     const { userId } = useAuth()
+    const { toast } = useToast()
 
     const { mutate: addReply, isLoading } = useMutation({
         mutationFn: async () => {
@@ -43,29 +46,29 @@ const PostComment = ({ comment }: Props) => {
         onError: (err) => {
             if (err instanceof AxiosError) {
                 if (err.response?.status === 422) {
-                    Swal.fire(
-                        "Couldn't create post",
-                        "The title should contain between 3 and 25 characters",
-                        "error"
-                    )
+                    toast({
+                        variant: 'destructive',
+                        title: "Couldn't create comment",
+                        description: "Comment should have atleast 2 characters"
+                    })
                     return
                 }
                 if (err.response?.status === 401) {
-                    Swal.fire(
-                        "Couldn't create post",
-                        "Your are not authorized to create a post",
-                        "error"
-                    )
+                    router.push('/sign-in')
                     return
                 }
-                Swal.fire(
-                    "Couldn't create post",
-                    "Some error occured",
-                    "error"
-                )
             }
+            toast({
+                variant: 'destructive',
+                title: "Couldn't create comment",
+                description: "Some error occured"
+            })
         },
         onSuccess: () => {
+            toast({
+                title: 'Success',
+                description: 'Reply added successfully'
+            })
             setIsReplying(false)
             setReply('')
             router.refresh()
@@ -113,7 +116,7 @@ const PostComment = ({ comment }: Props) => {
                     <textarea
                         onChange={(e) => setReply(e.target.value)}
                         value={reply}
-                        placeholder="Share your thoughts..."
+                        placeholder="Add a reply..."
                         rows={2}
                         autoFocus={true}
                         className="w-full bg-dark-highlights rounded-2xl shadow-2xl px-3 py-5 my-3" />

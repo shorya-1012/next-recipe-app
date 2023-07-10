@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
             skip: (pageParam - 1) * requiredPostsNumber,
             take: requiredPostsNumber,
             include: {
-                category: true
+                user: true
             }
         })
 

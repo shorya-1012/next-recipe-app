@@ -34,14 +34,14 @@ const CommenSection = async ({ postId }: Props) => {
             {
                 comments.map(comment => {
                     return (
-                        <div className="flex flex-col">
+                        <div key={comment.commentId} className="flex flex-col">
                             <div className="mb-2">
                                 <PostComment comment={comment} />
                             </div>
                             {
                                 comment.replies.map(reply => {
                                     return (
-                                        <div className="ml-4 py-2 pl-4 border-l-2 border-zinc-600">
+                                        <div key={comment.commentId} className="ml-4 py-2 pl-4 border-l-2 border-zinc-600">
                                             <PostComment comment={reply} />
                                         </div>
                                     )

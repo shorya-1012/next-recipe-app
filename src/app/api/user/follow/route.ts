@@ -1,4 +1,4 @@
-import { CommentLikeValidator } from "@/lib/apiValidators"
+import { UserFollowValidator, UserUnFollowValidator } from "@/lib/apiValidators"
 import { prisma } from "@/lib/db"
 import { auth } from "@clerk/nextjs"
 import { NextResponse } from "next/server"
@@ -9,7 +9,7 @@ export async function POST(req: Request) {
     const body = await req.json()
 
     try {
-        const { commentCommentId } = CommentLikeValidator.parse(body)
+        const { followerId, followingId } = UserFollowValidator.parse(body)
 
         const { userId } = auth()
 
@@ -17,21 +17,25 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'Not Authorized' }, { status: 401 })
         }
 
-        const isAlreadyLiked = await prisma.commentLike.findMany({
+        if (followingId === userId) {
+            return NextResponse.json({ error: 'cant follow yourself' }, { status: 403 })
+        }
+
+        const isAlreadyFollowing = await prisma.follows.findMany({
             where: {
-                commentCommentId,
-                userId
+                followerId,
+                followingId
             }
         })
 
-        if (isAlreadyLiked.length !== 0) {
-            return NextResponse.json({ error: "Can't like the same comment twice" }, { status: 403 })
+        if (isAlreadyFollowing.length !== 0) {
+            return NextResponse.json({ error: "Can't follow the same user twice" }, { status: 403 })
         }
 
-        const like = await prisma.commentLike.create({
+        const follow = await prisma.follows.create({
             data: {
-                userId,
-                commentCommentId
+                followerId,
+                followingId
             }
         })
 
@@ -54,18 +58,16 @@ export async function DELETE(req: Request) {
     try {
 
         const { userId } = auth()
+
         if (!userId) {
             return NextResponse.json({ error: 'Not Authorized' }, { status: 401 })
         }
 
-        const { commentCommentId } = CommentLikeValidator.parse(body)
+        const { id } = UserUnFollowValidator.parse(body)
 
-        await prisma.commentLike.deleteMany({
+        await prisma.follows.delete({
             where: {
-                commentCommentId,
-                user: {
-                    id: userId
-                }
+                id
             }
         })
 

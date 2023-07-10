@@ -1,4 +1,4 @@
-import { PostFavouriteValidator, PostUnFavouriteValidator } from "@/lib/apiValidators"
+import { PostFavouriteValidator } from "@/lib/apiValidators"
 import { prisma } from "@/lib/db"
 import { auth } from "@clerk/nextjs"
 import { NextResponse } from "next/server"
@@ -15,6 +15,17 @@ export async function POST(req: Request) {
 
         if (!userId) {
             return NextResponse.json({ error: 'Not Authorized' }, { status: 401 })
+        }
+
+        const isAleradyFavourited = await prisma.favouritedPost.findMany({
+            where: {
+                postPostId: postId,
+                userId
+            }
+        })
+
+        if (isAleradyFavourited.length !== 0) {
+            return NextResponse.json({ error: "Can't favourite the same post twice" }, { status: 403 })
         }
 
         const favourite = await prisma.favouritedPost.create({
@@ -47,11 +58,14 @@ export async function DELETE(req: Request) {
             return NextResponse.json({ error: 'Not Authorized' }, { status: 401 })
         }
 
-        const { id } = PostUnFavouriteValidator.parse(body)
+        const { postId } = PostFavouriteValidator.parse(body)
 
-        await prisma.favouritedPost.delete({
+        await prisma.favouritedPost.deleteMany({
             where: {
-                id
+                postPostId: postId,
+                user: {
+                    id: userId
+                }
             }
         })
 
@@ -63,6 +77,7 @@ export async function DELETE(req: Request) {
             return NextResponse.json({ error: err }, { status: 422 })
 
         }
+        console.log(error)
         return NextResponse.json({ error: error }, { status: 500 })
     }
 }

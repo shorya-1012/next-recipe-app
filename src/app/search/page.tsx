@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/db"
-import UserProfileCard from "@/components/UserProfileCard"
 import Link from "next/link"
-import UserPostCard from "@/components/UserPostCard"
+import SearchPostCard from "@/components/search-page-ui/SearchPostCard"
+import SearchUserCard from "@/components/search-page-ui/SearchUserCard"
 
 const page = async ({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) => {
 
@@ -29,6 +29,9 @@ const page = async ({ searchParams }: { searchParams: { [key: string]: string | 
                 },
             ]
         },
+        include: {
+            follower: true
+        }
     })
 
     const posts = await prisma.post.findMany({
@@ -57,39 +60,47 @@ const page = async ({ searchParams }: { searchParams: { [key: string]: string | 
             ]
         },
         include: {
-            category: true
+            user: true
         }
     })
 
     return (
-        <div className="w-screen min-h-screen overflow-x-hidden bg-dark-body text-white flex flex-col items-center ">
-            {users.length !== 0 &&
-                <h2 className="text-xl font-nunito font-semibold mt-10">Users : </h2>
-            }
-            <div className="w-full md:w-full lg:w-[90%] sm:mx-auto py-5 px-5 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 justify-items-center">
+        <div className="w-screen min-h-screen overflow-x-hidden flex flex-col items-start">
+            <h1 className="mt-5 text-xl italic px-5 ms-1">showing search results for "{searchQuery}"</h1>
+            <div className={`${users.length !== 0 ? '' : 'hidden'} ms-2 px-5 w-full mt-5`}>
+                <h2 className="text-xl ms-1 mb-4 md:text-2xl font-nunito font-semibold mt-10">Users : </h2>
                 {
                     users.map(user => {
                         return (
-                            <Link href={`/user/${user.id}`} >
-                                <UserProfileCard userName={user.first_name + ' ' + user.last_name} imgageURL={user.profileImageUrl || ''} />
+                            <Link href={`/user/${user.id}`}>
+                                <SearchUserCard
+                                    key={user.id}
+                                    userName={user.first_name + ' ' + user.last_name}
+                                    userProfilePicUrl={user.profileImageUrl || ''}
+                                    followerCount={user.follower.length}
+                                />
                             </Link>
                         )
                     })
                 }
             </div>
-            <div className={`${posts.length !== 0 ? '' : 'hidden'} w-full flex flex-col items-center mt-5`}>
-                <h3 className="text-xl font-nunito font-semibold">Posts</h3>
-                <div className="w-full md:w-[95%] lg:w-[90%] sm:mx-auto py-5 px-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center">
-                    {
-                        posts.map(post => {
-                            return (
-                                <Link href={`/recipes/${post.postId}`}>
-                                    <UserPostCard key={post.postId} title={post.postTitle} imageURL={post.imageURL} categoryName={post.category[0].name} />
-                                </Link>
-                            )
-                        })
-                    }
-                </div>
+            <div className={`${posts.length !== 0 ? '' : 'hidden'} ms-2 px-5 w-full mt-5`}>
+                <h3 className="text-xl md:text-2xl mb-2 font-nunito font-semibold">Posts</h3>
+                {
+                    posts.map(post => {
+                        return (
+                            <Link href={`/recipes/${post.postId}`}>
+                                <SearchPostCard
+                                    key={post.postId}
+                                    title={post.postTitle}
+                                    postImageURL={post.imageURL}
+                                    authorImageUrl={post.user.profileImageUrl || ''}
+                                    authorUserName={post.user.first_name + ' ' + post.user.last_name}
+                                />
+                            </Link>
+                        )
+                    })
+                }
             </div>
         </div >
     )

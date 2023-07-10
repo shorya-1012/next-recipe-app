@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import axios, { AxiosError } from 'axios'
 import Swal from 'sweetalert2'
-import { CommentLikePayload, CommentUnlikePayload } from '@/lib/apiValidators'
+import { CommentLikePayload } from '@/lib/apiValidators'
 import { useRouter } from 'next/navigation'
 import { CommentLike } from '@prisma/client'
 import { useAuth } from '@clerk/nextjs'
@@ -24,17 +24,15 @@ const CommentLikeButton = ({ commentId, commentLikes }: Props) => {
 
     const { mutate: handleCommentLike } = useMutation({
         mutationFn: async () => {
+            const payload: CommentLikePayload = {
+                commentCommentId: commentId
+            }
+
             if (liked) {
-                const payload: CommentLikePayload = {
-                    commentCommentId: commentId
-                }
                 const { data } = await axios.post('/api/post/comment/like', payload)
                 return data
             }
 
-            const payload: CommentUnlikePayload = {
-                id: isLiked[0].id
-            }
             const { data } = await axios.delete('/api/post/comment/like', { data: payload })
             return data
         },

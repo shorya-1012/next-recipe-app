@@ -21,6 +21,16 @@ model User {
   Comment         Comment[]
   CommentLike     CommentLike[]
   FavouritedPost  FavouritedPost[]
+  follower        Follows[]        @relation("following")
+  following       Follows[]        @relation("follower")
+}
+
+model Follows {
+  id          String @id @default(cuid())
+  follower    User   @relation("follower", fields: [followerId], references: [id], onDelete: Cascade)
+  followerId  String
+  following   User   @relation("following", fields: [followingId], references: [id], onDelete: Cascade)
+  followingId String
 }
 
 model Post {
@@ -56,7 +66,7 @@ model Comment {
 
 model FavouritedPost {
   id         String @id @default(uuid())
-  user       User   @relation(fields: [userId], references: [id])
+  user       User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
   post       Post   @relation(fields: [postPostId], references: [postId])
   postPostId String

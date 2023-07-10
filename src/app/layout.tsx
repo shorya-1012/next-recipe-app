@@ -3,6 +3,7 @@ import Navbar from '@/components/navbar-ui/Navbar'
 import { Righteous, Nunito } from 'next/font/google'
 import { ClerkProvider } from '@clerk/nextjs'
 import ReactQueryProvider from '@/ReactQueryProvider'
+import { Toaster } from '@/components/ui/toaster'
 
 export const metadata = {
   title: 'RecipeRealm',
@@ -43,6 +44,7 @@ export default async function RootLayout({
             <div className='h-full mx-auto'>
               {children}
             </div>
+            <Toaster />
           </body>
         </ReactQueryProvider>
       </html>

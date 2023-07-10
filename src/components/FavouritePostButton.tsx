@@ -7,7 +7,7 @@ import axios, { AxiosError } from "axios"
 import Swal from "sweetalert2"
 import { FavouritedPost } from "@prisma/client"
 import { HiOutlineStar, HiStar } from 'react-icons/hi'
-import { PostFavouritePayload, PostUnfavouritePayload } from "@/lib/apiValidators"
+import { PostFavouritePayload } from "@/lib/apiValidators"
 
 type Props = {
     postId: string;
@@ -23,24 +23,19 @@ const FavouritePostButton = ({ postId, postFavourites }: Props) => {
 
     const { mutate: handlePostFavourite } = useMutation({
         mutationFn: async () => {
+            const payload: PostFavouritePayload = {
+                postId: postId
+            }
             if (favoirite) {
-                const payload: PostFavouritePayload = {
-                    postId: postId
-                }
                 const { data } = await axios.post('/api/post/like', payload)
                 return data
-            }
-
-            const payload: PostUnfavouritePayload = {
-                id: isFavourited[0].id
             }
             const { data } = await axios.delete('/api/post/like', { data: payload })
             return data
         },
         onError: (err) => {
+            setFavourited(prev => !prev)
             if (err instanceof AxiosError) {
-                setFavourited(prev => !prev)
-                favoirite ? setFavoritesCount(prev => prev + 1) : setFavoritesCount(prev => prev - 1)
                 if (err.response?.status === 422) {
                     Swal.fire(
                         "Couldn't favourite post",
@@ -58,6 +53,7 @@ const FavouritePostButton = ({ postId, postFavourites }: Props) => {
                     "Some error occured",
                     "error"
                 )
+                return
             }
         },
         onSuccess: () => {

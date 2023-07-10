@@ -5,7 +5,7 @@ import { useMutation } from "@tanstack/react-query"
 import { CreateCommentPayload } from "@/lib/apiValidators"
 import { AiOutlineLoading } from "react-icons/ai"
 import { useRouter } from "next/navigation"
-import Swal from "sweetalert2"
+import { useToast } from "../ui/use-toast"
 
 type Props = {
     postId: string
@@ -16,6 +16,8 @@ const CreateComment = ({ postId, replyToId }: Props) => {
 
     const [userComment, setUserComment] = useState('')
     const router = useRouter()
+
+    const { toast } = useToast()
 
     const { mutate: createComment, isLoading } = useMutation({
         mutationFn: async () => {
@@ -30,29 +32,29 @@ const CreateComment = ({ postId, replyToId }: Props) => {
         onError: (err) => {
             if (err instanceof AxiosError) {
                 if (err.response?.status === 422) {
-                    Swal.fire(
-                        "Couldn't create post",
-                        "The title should contain between 3 and 25 characters",
-                        "error"
-                    )
+                    toast({
+                        variant: 'destructive',
+                        title: "Couldn't add comment",
+                        description: "Comment should contain atleast 2 character"
+                    })
                     return
                 }
                 if (err.response?.status === 401) {
-                    Swal.fire(
-                        "Couldn't create post",
-                        "Your are not authorized to create a post",
-                        "error"
-                    )
+                    router.push('/sign-in')
                     return
                 }
-                Swal.fire(
-                    "Couldn't create post",
-                    "Some error occured",
-                    "error"
-                )
+                toast({
+                    variant: 'destructive',
+                    title: "Couldn't add comment",
+                    description: "Your comment could not be added"
+                })
             }
         },
         onSuccess: () => {
+            toast({
+                title: 'Comment added successfully',
+                description: "Your comment was added successfully"
+            })
             setUserComment('')
             router.refresh()
         }
