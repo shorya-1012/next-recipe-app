@@ -111,8 +111,8 @@ const Navbar = () => {
                 </div>
             </header>
             <div
-                className={`sm:hidden w-screen h-screen absolute ${searchDropdown ? 'right-[0%]' : 'right-[-100%]'} py-3 shadow-2xl overflow-hidden bg-dark-body z-10 ease-in-out duration-500`}>
-                <div className='flex h-[40px] gap-x-5 items-center justify-end overflow-hidden shadow-xl px-4'>
+                className={`sm:hidden w-screen h-screen absolute ${searchDropdown ? 'right-[0%]' : 'right-[100%]'} py-3 shadow-2xl overflow-x-hidden bg-dark-body z-10 ease-in-out duration-500`}>
+                <div className='flex h-[40px] gap-x-5 items-center justify-end overflow-x-hidden shadow-xl px-4'>
                     <SearchBar
                         style='flex w-[80%] items-center h-[85%]'
                         setShowRecentSearches={setShowRecentSearches}
