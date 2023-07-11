@@ -36,7 +36,7 @@ model Follows {
 model Post {
   postId         String           @id @default(uuid())
   postTitle      String
-  user           User             @relation(fields: [userId], references: [id])
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId         String
   imageURL       String
   ingredients    String           @db.Text
@@ -55,7 +55,7 @@ model Comment {
   createdAt DateTime @default(now())
   author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId  String
-  post      Post     @relation(fields: [postsId], references: [postId])
+  post      Post     @relation(fields: [postsId], references: [postId], onDelete: Cascade)
   postsId   String
 
   replyToId   String?
@@ -68,14 +68,14 @@ model FavouritedPost {
   id         String @id @default(uuid())
   user       User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
-  post       Post   @relation(fields: [postPostId], references: [postId])
+  post       Post   @relation(fields: [postPostId], references: [postId], onDelete: Cascade)
   postPostId String
 }
 
 model CommentLike {
   id               String   @id @default(cuid())
   user             User     @relation(fields: [userId], references: [id])
-  Comment          Comment? @relation(fields: [commentCommentId], references: [commentId])
+  Comment          Comment? @relation(fields: [commentCommentId], references: [commentId], onDelete: Cascade)
   commentCommentId String?
   userId           String
 }

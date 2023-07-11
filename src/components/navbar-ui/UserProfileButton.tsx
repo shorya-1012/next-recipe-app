@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 import Link from "next/link"
-import Image from "next/image"
 import { FaUser } from 'react-icons/fa'
 import { TiTick } from 'react-icons/ti'
 import { AiFillHeart, AiFillEdit } from 'react-icons/ai'
+import { RxDashboard } from 'react-icons/rx'
 import { MdOutlineLogout, MdArrowDropDown } from 'react-icons/md'
 import { useClerk } from "@clerk/nextjs"
 import {
@@ -23,13 +23,20 @@ type Props = {
     userId: string | null | undefined
 }
 
+type UserDetail = {
+    userDetails: {
+        profileImageUrl: string | null;
+        role: "ADMIN" | "USER"
+    };
+}
+
 const UserProfileButton = ({ userId }: Props) => {
 
     const { signOut } = useClerk()
 
-    const { data: userPorfileImage, isLoading } = useQuery(['getProileImage'], async () => {
-        const { data } = await axios.get('/api/get-current-user-profile-pic')
-        return data.imageUrl
+    const { data: user, isLoading } = useQuery(['getProileImage'], async () => {
+        const { data } = await axios.get<UserDetail>('/api/get-current-user-profile-pic')
+        return data.userDetails
     })
 
 
@@ -39,7 +46,7 @@ const UserProfileButton = ({ userId }: Props) => {
                 <DropdownMenuTrigger>
                     <div className="flex gap-1 items-center">
                         <Avatar>
-                            <AvatarImage src={userPorfileImage} />
+                            <AvatarImage src={user?.profileImageUrl || ''} />
                         </Avatar>
                         {
                             isLoading &&
@@ -56,6 +63,17 @@ const UserProfileButton = ({ userId }: Props) => {
                     </DropdownMenuLabel>
                     <hr className="w-full h-px mt-1" />
                     <DropdownMenuSeparator />
+                    {
+                        user?.role === 'ADMIN' &&
+                        <DropdownMenuItem>
+                            <Link href={`/dashboard`}>
+                                <div className="hover:text-gray-500 w-full h-full flex items-center gap-3 my-1">
+                                    <RxDashboard size={15} />
+                                    <span className=" text-base font-nunito">Dashboard </span>
+                                </div>
+                            </Link>
+                        </DropdownMenuItem>
+                    }
                     <DropdownMenuItem>
                         <Link href={`/user/${userId}`}>
                             <div className="hover:text-gray-500 w-full h-full flex items-center gap-3 my-1">

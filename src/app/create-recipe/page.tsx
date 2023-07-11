@@ -172,7 +172,6 @@ const page = () => {
                                         fill={true}
                                         sizes="100%"
                                         className=" object-cover"
-                                        placeholder="blur"
                                     />
                                 </div>
                         }

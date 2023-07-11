@@ -33,9 +33,29 @@ export const UserUnFollowValidator = z.object({
     id: z.string()
 })
 
+export const NewCategoryValidator = z.object({
+    name: z.string().min(3, 'Name should contain atleast 3 characters ')
+})
+
+export const DeletePostValidator = z.object({
+    postId: z.string()
+})
+
+export const UpdateUserRoleValidator = z.object({
+    id: z.string()
+})
+
+export const DeleteUserValidator = z.object({
+    id: z.string()
+})
+
 export type CreateCommentPayload = z.infer<typeof CreateCommentValidator>
 export type CreatePostPayload = z.infer<typeof CreatePostRequestValidator>
 export type CommentLikePayload = z.infer<typeof CommentLikeValidator>
 export type PostFavouritePayload = z.infer<typeof PostFavouriteValidator>
 export type UserFollowPayload = z.infer<typeof UserFollowValidator>
 export type UserUnFollowPayload = z.infer<typeof UserUnFollowValidator>
+export type NewCategoryPayload = z.infer<typeof NewCategoryValidator>
+export type DeletePostPayload = z.infer<typeof DeletePostValidator>
+export type UpdateUserRolePayload = z.infer<typeof UpdateUserRoleValidator>
+export type DeleteUserPayload = z.infer<typeof DeleteUserValidator>
