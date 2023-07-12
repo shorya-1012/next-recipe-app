@@ -25,8 +25,8 @@ const RecentSearches = ({ recentSearches, clearSearch, style }: Props) => {
                         )
                     }
                     return (
-                        <Link href={`http://localhost:3000/search?q=${recentSearch}`}>
-                            <p key={i} className="w-full py-2 border-b-[1px] border-gray-500">
+                        <Link key={i} href={`/search?q=${recentSearch}`}>
+                            <p className="w-full py-2 border-b-[1px] border-gray-500">
                                 {recentSearch}
                             </p>
                         </Link>

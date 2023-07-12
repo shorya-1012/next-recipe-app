@@ -139,7 +139,7 @@ const Navbar = () => {
                                 )
                             }
                             return (
-                                <Link href={`http://localhost:3000/search?q=${recentSearch}`}>
+                                <Link href={`/search?q=${recentSearch}`}>
                                     <p key={i} className="w-full py-2 border-b-[1px] border-gray-500">
                                         {recentSearch}
                                     </p>
