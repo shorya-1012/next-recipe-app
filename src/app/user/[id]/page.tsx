@@ -1,10 +1,11 @@
-import { auth, } from "@clerk/nextjs"
-import { prisma } from "@/lib/db"
+import {auth, } from "@clerk/nextjs"
+import {prisma} from "@/lib/db"
 import NoPostPage from "@/components/profile-page-ui/NoPostPage"
 import UserPostPage from "@/components/profile-page-ui/UserPostPage"
 import UserInformation from "@/components/profile-page-ui/UserInformation"
+import {notFound} from "next/navigation"
 
-const page = async ({ params }: { params: { id: string } }) => {
+const page = async ({params}: {params: {id: string}}) => {
 
     try {
 
@@ -30,7 +31,7 @@ const page = async ({ params }: { params: { id: string } }) => {
             )
         }
 
-        const { userId } = auth()
+        const {userId} = auth()
 
         const isCurrentUser = params.id === userId;
 
@@ -54,11 +55,7 @@ const page = async ({ params }: { params: { id: string } }) => {
         )
     } catch (error) {
         console.log(error)
-        return (
-            <div className="h-screen bg-dark-body text-white flex justify-center items-center">
-                <h1 className="text-3xl ">User Not Found</h1>
-            </div>
-        )
+        notFound()
     }
 
 

@@ -1,26 +1,10 @@
 "use client"
 
-import { ColumnDef } from "@tanstack/react-table"
-import { Eye, Trash2, Loader2 } from "lucide-react"
-import { useMutation } from "@tanstack/react-query"
-import { DeletePostPayload } from "@/lib/apiValidators"
-import axios, { AxiosError } from "axios"
-import { useRouter } from "next/navigation"
-import { useToast } from "@/components/ui/use-toast"
-import Link from "next/link"
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import {ColumnDef} from "@tanstack/react-table"
+import {Eye} from "lucide-react"
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip"
 import DeletePostButton from "@/components/dashboard/DeletePostButton"
+import Link from "next/link"
 
 export type PostDetails = {
     postId: string;
@@ -44,7 +28,7 @@ export const columns: ColumnDef<PostDetails>[] = [
     {
         id: "actions",
         header: "Actions",
-        cell: ({ row }) => {
+        cell: ({row}) => {
             const post = row.original
 
             return (

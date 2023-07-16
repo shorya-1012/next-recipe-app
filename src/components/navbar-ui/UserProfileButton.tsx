@@ -1,12 +1,12 @@
-import { useQuery } from "@tanstack/react-query"
+import {useQuery} from "@tanstack/react-query"
 import axios from "axios"
 import Link from "next/link"
-import { FaUser } from 'react-icons/fa'
-import { TiTick } from 'react-icons/ti'
-import { AiFillHeart, AiFillEdit } from 'react-icons/ai'
-import { RxDashboard } from 'react-icons/rx'
-import { MdOutlineLogout, MdArrowDropDown } from 'react-icons/md'
-import { useClerk } from "@clerk/nextjs"
+import {FaUser} from 'react-icons/fa'
+import {TiTick} from 'react-icons/ti'
+import {AiFillHeart, AiFillEdit} from 'react-icons/ai'
+import {RxDashboard} from 'react-icons/rx'
+import {MdOutlineLogout, MdArrowDropDown} from 'react-icons/md'
+import {useClerk} from "@clerk/nextjs"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -15,8 +15,8 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "../ui/DropdownMenu"
-import { Avatar } from "../ui/Avatar"
-import { AvatarImage } from "@radix-ui/react-avatar"
+import {Avatar} from "../ui/Avatar"
+import {AvatarImage} from "@radix-ui/react-avatar"
 
 
 type Props = {
@@ -30,12 +30,12 @@ type UserDetail = {
     };
 }
 
-const UserProfileButton = ({ userId }: Props) => {
+const UserProfileButton = ({userId}: Props) => {
 
-    const { signOut } = useClerk()
+    const {signOut} = useClerk()
 
-    const { data: user, isLoading } = useQuery(['getProileImage'], async () => {
-        const { data } = await axios.get<UserDetail>('/api/get-current-user-profile-pic')
+    const {data: user, isLoading} = useQuery(['getProileImage'], async () => {
+        const {data} = await axios.get<UserDetail>('/api/get-current-user-profile-pic')
         return data.userDetails
     })
 
@@ -57,7 +57,7 @@ const UserProfileButton = ({ userId }: Props) => {
                         <MdArrowDropDown />
                     </div>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56 mr-5 bg-dark-body my-5 py-3 rounded-xl ">
+                <DropdownMenuContent className="w-44 mr-5 bg-dark-body my-5 py-3 rounded-xl ">
                     <DropdownMenuLabel>
                         <span className="h-4 text-lg">My Account</span>
                     </DropdownMenuLabel>
@@ -101,7 +101,7 @@ const UserProfileButton = ({ userId }: Props) => {
                     <DropdownMenuItem>
                         <Link href={'/following'}>
                             <div className="hover:text-gray-500 w-full h-full flex items-center gap-3 my-1">
-                                <TiTick size={20} />
+                                <TiTick size={15} />
                                 <span className=" text-base font-nunito">Following</span>
                             </div>
                         </Link>
@@ -111,7 +111,7 @@ const UserProfileButton = ({ userId }: Props) => {
                             onClick={() => signOut()}
                             className="hover:text-gray-500 w-full h-full flex items-center gap-3 my-1 ms-1"
                         >
-                            <MdOutlineLogout size={20} />
+                            <MdOutlineLogout size={15} />
                             <span className=" text-base font-nunito">Sign Out</span>
                         </button>
                     </DropdownMenuItem>

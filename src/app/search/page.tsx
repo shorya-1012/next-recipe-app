@@ -1,17 +1,14 @@
-import { prisma } from "@/lib/db"
+import {prisma} from "@/lib/db"
 import Link from "next/link"
 import SearchPostCard from "@/components/search-page-ui/SearchPostCard"
 import SearchUserCard from "@/components/search-page-ui/SearchUserCard"
+import {notFound} from "next/navigation"
 
-const page = async ({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) => {
+const page = async ({searchParams}: {searchParams: {[key: string]: string | string[] | undefined}}) => {
 
     const searchQuery = searchParams.q
     if (!searchQuery || typeof searchQuery !== 'string') {
-        return (
-            <div className="w-screen min-h-screen bg-dark-body text-white flex justify-center items-center">
-                <h1>No Posts Found</h1>
-            </div>
-        )
+        notFound()
     }
 
     const users = await prisma.user.findMany({
@@ -63,6 +60,10 @@ const page = async ({ searchParams }: { searchParams: { [key: string]: string | 
             user: true
         }
     })
+
+    if (users.length === 0 && posts.length === 0) {
+        notFound()
+    }
 
     return (
         <div className="w-screen min-h-screen overflow-x-hidden flex flex-col items-start">

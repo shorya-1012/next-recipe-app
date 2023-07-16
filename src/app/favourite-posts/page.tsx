@@ -1,15 +1,14 @@
 import UserPostCard from "@/components/UserPostCard"
-import { prisma } from "@/lib/db"
-import { auth } from "@clerk/nextjs"
-import { redirect } from "next/navigation"
+import {prisma} from "@/lib/db"
+import {auth} from "@clerk/nextjs"
+import {notFound, redirect} from "next/navigation"
 import Link from "next/link"
 
 const page = async () => {
-    const { userId } = auth()
+    const {userId} = auth()
 
     if (!userId) {
         redirect('/sign-in')
-        return
     }
 
     const favouritedPostsList = await prisma.favouritedPost.findMany({
@@ -25,6 +24,9 @@ const page = async () => {
         }
     })
 
+    if (favouritedPostsList.length === 0) {
+        notFound()
+    }
 
     return (
         <div className="w-screen overflow-x-hidden flex flex-col items-center">

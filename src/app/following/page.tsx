@@ -1,12 +1,12 @@
-import { prisma } from "@/lib/db"
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/Avatar"
+import {prisma} from "@/lib/db"
+import {Avatar, AvatarImage, AvatarFallback} from "@/components/ui/Avatar"
 import UserPostCard from "@/components/UserPostCard"
-import { auth } from "@clerk/nextjs"
+import {auth} from "@clerk/nextjs"
 import Link from "next/link"
 
 const page = async () => {
 
-    const { userId } = auth()
+    const {userId} = auth()
 
     if (!userId) {
         return (

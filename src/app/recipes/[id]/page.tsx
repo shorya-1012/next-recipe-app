@@ -1,11 +1,14 @@
 import FavouritePostButton from "@/components/FavouritePostButton"
 import CommenSection from "@/components/comment-section-ui/CommenSection"
-import { prisma } from "@/lib/db"
-import { auth } from "@clerk/nextjs"
+import {prisma} from "@/lib/db"
+import {auth} from "@clerk/nextjs"
+import {Loader2} from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+import {notFound} from "next/navigation"
+import {Suspense} from "react"
 
-const page = async ({ params }: { params: { id: string } }) => {
+const page = async ({params}: {params: {id: string}}) => {
     const postDetails = await prisma.post.findUnique({
         where: {
             postId: params.id
@@ -18,13 +21,9 @@ const page = async ({ params }: { params: { id: string } }) => {
     })
 
     if (!postDetails) {
-        return (
-            <div className="w-screen h-screen flex justify-center items-center text-3xl font-nunito text-center">
-                <h1>Post does not exist</h1>
-            </div>
-        )
+        notFound()
     }
-    const { userId } = auth()
+    const {userId} = auth()
 
     const isAuthor = userId === postDetails?.userId
 
@@ -69,18 +68,22 @@ const page = async ({ params }: { params: { id: string } }) => {
             <section className="flex flex-col items-start lg:flex-row lg:justify-around lg:items-start w-screen my-10 px-3">
                 <div className="lg:w-[60%] px-5 py-5 order-2 lg:order-1 ms-1 sm:ms-5 lg:ms-0">
                     <h2 className="text-3xl font-bold text-blue-400">Instructions :</h2>
-                    <div className="text-lg pt-5" dangerouslySetInnerHTML={{ __html: postDetails?.content! }} />
+                    <div className="text-lg pt-5" dangerouslySetInnerHTML={{__html: postDetails?.content!}} />
                 </div>
                 <div className="lg:w-[30%] px-3 py-5 sm:ms-10 lg:ms-0 order-1 lg:order-2">
                     <span className="text-3xl font-bold ms-1 text-blue-400">Ingredients :</span>
-                    <div className="text-lg pt-5 ms-7" dangerouslySetInnerHTML={{ __html: postDetails?.ingredients! }} />
+                    <div className="text-lg pt-5 ms-7" dangerouslySetInnerHTML={{__html: postDetails?.ingredients!}} />
                 </div>
             </section>
             {/* CommenSection */}
             <div className="w-full">
                 <hr className="w-screen h-px bg-white" />
-                {/* @ts-expect-error Server Component */}
-                <CommenSection postId={postDetails.postId} />
+                <Suspense fallback={
+                    <Loader2 size={'24px'} className="animate-spin" />
+                }>
+                    {/* @ts-expect-error Server Component */}
+                    <CommenSection postId={postDetails.postId} />
+                </Suspense>
             </div>
         </div>
     )

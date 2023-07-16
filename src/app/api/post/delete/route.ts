@@ -13,7 +13,7 @@ export async function DELETE(req: Request) {
         const { userId } = auth()
         if (!userId) return NextResponse.json({ error: 'Not signed In' }, { status: 401 })
 
-        const { postId } = DeletePostValidator.parse(body)
+        const { postId} = DeletePostValidator.parse(body)
 
         const post = await prisma.post.findUnique({
             where: {
@@ -27,8 +27,8 @@ export async function DELETE(req: Request) {
             }
         })
 
-        if (currUser?.role !== 'ADMIN' || userId !== post?.userId) {
-            return NextResponse.json({ error: 'Not authorized' }, { status: 401 })
+        if(!currUser || currUser.role !== 'ADMIN' || userId !== post?.userId){
+            return NextResponse.json({ error: 'Not signed In' }, { status: 401 })
         }
 
         await prisma.post.delete({
@@ -37,7 +37,7 @@ export async function DELETE(req: Request) {
             }
         })
 
-        return NextResponse.json({ status: 200 })
+        return NextResponse.json({message : 'delted successfully'} ,{ status: 200 })
 
     } catch (error) {
         if (error instanceof z.ZodError) {
