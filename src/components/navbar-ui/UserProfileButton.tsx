@@ -57,7 +57,7 @@ const UserProfileButton = ({userId}: Props) => {
                         <MdArrowDropDown />
                     </div>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-44 mr-5 bg-dark-body my-5 py-3 rounded-xl ">
+                <DropdownMenuContent className="w-44 border-none shadow-xl shadow-gray-700 mr-5 bg-dark-body my-5 py-3 rounded-xl ">
                     <DropdownMenuLabel>
                         <span className="h-4 text-lg">My Account</span>
                     </DropdownMenuLabel>

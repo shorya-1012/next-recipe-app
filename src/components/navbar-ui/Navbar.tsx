@@ -1,13 +1,13 @@
 'use client'
-import { GiCook } from 'react-icons/gi'
-import { RxCross1 } from 'react-icons/rx'
-import { useState, useEffect, useRef } from "react"
+import {GiCook} from 'react-icons/gi'
+import {RxCross1} from 'react-icons/rx'
+import {useState, useEffect, useRef} from "react"
 import Link from 'next/link'
-import { SignedOut, SignedIn, useAuth } from "@clerk/nextjs"
+import {SignedOut, SignedIn, useAuth} from "@clerk/nextjs"
 import SearchBar from './SearchBar'
 import UserProfileButton from './UserProfileButton'
-import { BiSearch } from 'react-icons/bi'
-import { useRouter } from 'next/navigation'
+import {BiSearch} from 'react-icons/bi'
+import {useRouter} from 'next/navigation'
 import RecentSearches from './RecentSearches'
 
 
@@ -19,7 +19,7 @@ const Navbar = () => {
         initialRecentSearchData = JSON.parse(data)
     }
 
-    const { userId } = useAuth()
+    const {userId} = useAuth()
     const [searchDropdown, setSearchDropdown] = useState(false)
 
     const [showRecentSearches, setShowRecentSearches] = useState(false)
@@ -99,7 +99,9 @@ const Navbar = () => {
                         </SignedIn>
                         <SignedOut>
                             <Link href={'/sign-in'}>
-                                <p>Sign In</p>
+                                <div className='w-max h-full flex items-center hover:font-bold'>
+                                    <p>Sign In</p>
+                                </div>
                             </Link>
                         </SignedOut>
                     </div>
