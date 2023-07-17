@@ -52,8 +52,6 @@ const Navbar = () => {
         }
     }
 
-    console.log(showRecentSearches)
-
     const handleSearch = async (e: React.FormEvent, searchParams: string) => {
         e.preventDefault()
         if (!searchParams) {
@@ -99,7 +97,7 @@ const Navbar = () => {
                         </SignedIn>
                         <SignedOut>
                             <Link href={'/sign-in'}>
-                                <div className='w-max h-full flex items-center hover:font-bold'>
+                                <div className='w-max h-full mr-3 flex items-center hover:font-bold'>
                                     <p>Sign In</p>
                                 </div>
                             </Link>
@@ -141,7 +139,7 @@ const Navbar = () => {
                                 )
                             }
                             return (
-                                <Link href={`/search?q=${recentSearch}`}>
+                                <Link key={i} href={`/search?q=${recentSearch}`}>
                                     <p key={i} className="w-full py-2 border-b-[1px] border-gray-500">
                                         {recentSearch}
                                     </p>

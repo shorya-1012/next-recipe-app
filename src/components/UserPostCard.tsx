@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/Avatar"
+import {Avatar, AvatarFallback, AvatarImage} from "./ui/Avatar"
 
 type Props = {
     postImageURL: string;
@@ -13,7 +13,13 @@ const UserPostCard = (props: Props) => {
         <div className="rounded w-[360px] sm:w-[330px] md:w-[360px] lg:w-[380px] max-h-[360px] m-3 bg-dark-body 
         hover:-translate-y-4 duration-500 hover:shadow-xl hover:shadow-gray-700 font-nunito">
             <div className="relative h-[200px] sm:h-[220px] lg:h-[240px] w-full">
-                <Image src={props.postImageURL} alt="recipe-image" fill={true} className="object-cover rounded" />
+                <Image
+                    src={props.postImageURL}
+                    alt="recipe-image"
+                    fill={true}
+                    sizes="100%"
+                    className="object-cover rounded"
+                />
             </div>
             <div className="flex flex-col mt-2 mb-5 pt-1 pb-1 px-3 cursor-pointer">
                 <div className="flex gap-3 h-full items-start my-2">

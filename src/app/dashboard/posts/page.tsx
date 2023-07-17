@@ -1,13 +1,13 @@
-import { prisma } from "@/lib/db"
-import { auth } from "@clerk/nextjs"
-import { redirect } from "next/navigation"
-import { columns } from "./columns"
-import { DataTable } from "../data-table"
+import {prisma} from "@/lib/db"
+import {auth} from "@clerk/nextjs"
+import {redirect} from "next/navigation"
+import {columns} from "./columns"
+import {DataTable} from "../data-table"
 import Sidebar from "@/components/dashboard/SideBar"
 
 const page = async () => {
 
-    const { userId } = auth()
+    const {userId} = auth()
     if (!userId) redirect('/')
 
     const user = await prisma.user.findUnique({

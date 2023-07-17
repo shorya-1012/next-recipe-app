@@ -1,11 +1,16 @@
 import Link from "next/link"
-import { RxDashboard, RxPerson } from 'react-icons/rx';
-import { HiOutlineHome } from 'react-icons/hi';
-import { BiCategory } from 'react-icons/bi'
-import { FileStack } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
+import {RxDashboard, RxPerson} from 'react-icons/rx';
+import {HiOutlineHome} from 'react-icons/hi';
+import {BiCategory} from 'react-icons/bi'
+import {FileStack} from "lucide-react";
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "../ui/tooltip";
 
-const Sidebar = () => {
+type Props = {
+    currentUrl: string;
+}
+
+const Sidebar = ({currentUrl}: Props) => {
+
     return (
         <div className=' w-20 min-h-screen p-4 text-white border-r-[1px] flex flex-col justify-between'>
             <div className='flex flex-col items-center'>
