@@ -5,11 +5,7 @@ import {BiCategory} from 'react-icons/bi'
 import {FileStack} from "lucide-react";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "../ui/tooltip";
 
-type Props = {
-    currentUrl: string;
-}
-
-const Sidebar = ({currentUrl}: Props) => {
+const Sidebar = () => {
 
     return (
         <div className=' w-20 min-h-screen p-4 text-white border-r-[1px] flex flex-col justify-between'>
