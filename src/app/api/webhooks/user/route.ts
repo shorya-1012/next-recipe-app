@@ -1,65 +1,47 @@
-import { Webhook, WebhookRequiredHeaders } from "svix";
-import { headers } from 'next/headers'
-import { IncomingHttpHeaders } from "http";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 
-const secret = process.env.WEBHOOK_SECRET || ""
-
-type EventType = "user.created" | "user.deleted" | "*"
-
-type Event = {
-    data: Record<string, string | number>,
-    object: "event",
-    type: EventType
-}
-
 export async function POST(req: Request) {
-    const payload = await req.json();
-    const headersList = headers();
-    const heads = {
-        "svix-id": headersList.get("svix-id"),
-        "svix-timestamp": headersList.get("svix-timestamp"),
-        "svix-signature": headersList.get("svix-signature")
-    }
-
-    const wh = new Webhook(secret);
-    let evt: Event | null = null;
+    console.log('endpoint hit')
+    const user = await req.json()
 
     try {
-        evt = wh.verify(JSON.stringify(payload), heads as IncomingHttpHeaders & WebhookRequiredHeaders) as Event
-    } catch (error) {
-        console.error((error as Error).message)
-        return NextResponse.json({}, { status: 400 })
-    }
 
-    try {
-    const eventType: EventType = evt.type
-    const { id, first_name, last_name, image_url } = evt.data
+        const {id , first_name , last_name , image_url} = user.data
+        console.log(id)
+        console.log(last_name)
+        console.log(first_name)
+        console.log(image_url)
 
-    if (eventType === "user.created") {
-        await prisma.user.create({
-            data: {
-                id: id as string,
-                first_name: first_name as string,
-                last_name: last_name as string,
-                profileImageUrl: image_url as string
-            }
-        })
-    }
-    else if (eventType === "user.deleted") {
-        await prisma.user.delete({
-            where: {
-                id: id as string
-            }
-        })
-    }
+        if(user.type === 'user.created'){
+            const newUser = await prisma.user.create({
+                data : {
+                    id : id,
+                    first_name : first_name,
+                    last_name : last_name,
+                    profileImageUrl : image_url
+                }
+            })
 
-    return NextResponse.json({ok: true} , {status : 200})
+            console.log('New User :')
+            console.log(newUser)
+        }
+        else if(user.type = 'user.deleted'){
+            console.log('deleting user')
+            await prisma.user.delete({
+                where : {
+                    id : id
+                }
+            })
+
+            console.log('user deleted')
+        }
+
+        return NextResponse.json({ok : true} , {status : 200})
 
     } catch (error) {
         console.log(error)
-        return NextResponse.json({ok : false} ,{status : 500})
+        return NextResponse.json({error : error} , {status : 500})
     }
 }
 
