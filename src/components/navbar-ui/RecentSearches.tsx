@@ -6,9 +6,9 @@ type Props = {
     clearSearch: any;
 }
 
-const RecentSearches = ({ recentSearches, clearSearch, style }: Props) => {
+const RecentSearches = ({recentSearches, clearSearch, style}: Props) => {
     return (
-        <div className={`${style} ${recentSearches.length === 0 ? 'hidden' : ''}    absolute z-10 px-2 w-[40vw] bg-dark-highlights rounded-xl ease-in-out duration-500 `}>
+        <div className={`${style} ${recentSearches.length === 0 ? 'hidden' : ''} z-10 px-2 w-[40vw] bg-dark-highlights rounded-xl ease-in-out duration-500 `}>
             <div className="flex justify-between items-center w-full border-b-[1px] border-gray-500">
                 <span className="font-nunito">Recent Searches</span>
                 <button

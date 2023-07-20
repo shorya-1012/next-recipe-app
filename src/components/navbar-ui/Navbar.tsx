@@ -86,7 +86,7 @@ const Navbar = () => {
                     />
                     <RecentSearches
                         recentSearches={recentSearches}
-                        style={`${showRecentSearches ? 'top-[8%]' : 'top-[-100%]'} py-2 my-2`}
+                        style={`${showRecentSearches ? 'top-[8%]' : 'top-[-100%]'} hidden sm:visible absolute py-2 my-2`}
                         clearSearch={clearSearch}
                     />
                 </div>

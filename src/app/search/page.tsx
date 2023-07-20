@@ -85,7 +85,7 @@ const page = async ({searchParams}: {searchParams: {[key: string]: string | stri
                     })
                 }
             </div>
-            <div className={`${posts.length !== 0 ? '' : 'hidden'} ms-2 px-5 w-full mt-5`}>
+            <div className={`${posts.length !== 0 ? '' : 'hidden'} ms-1 px-5 w-full mt-5`}>
                 <h3 className="text-xl md:text-2xl mb-2 font-nunito font-semibold">Posts</h3>
                 {
                     posts.map(post => {

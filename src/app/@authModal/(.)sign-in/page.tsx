@@ -3,10 +3,12 @@ import {SignIn} from "@clerk/nextjs"
 
 const page = () => {
     return (
-        <div className="fixed inset-0 z-10 bg-zinc-950/40">
-            <div className="container rounded-xl flex items-center h-full max-w-lg mx-auto">
+        <div className='w-screen h-screen flex justify-center items-center fixed inset-0 bg-zinc-900/20 z-10'>
+            <div className="bg-white rounded-xl flex items-center w-lg mx-auto">
                 <div className="relative bg-white text-black w-full h-fit py-10 px-3 rounded-xl">
-                    <CloseModalButton />
+                    <div className="my-3">
+                        <CloseModalButton />
+                    </div>
                     <SignIn />
                 </div>
             </div>
