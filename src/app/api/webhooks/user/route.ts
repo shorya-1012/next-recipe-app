@@ -6,7 +6,15 @@ import { prisma } from "@/lib/db";
 
 const secret = process.env.WEBHOOK_SECRET || ""
 
-async function handler(req: Request) {
+type EventType = "user.created" | "user.deleted" | "*"
+
+type Event = {
+    data: Record<string, string | number>,
+    object: "event",
+    type: EventType
+}
+
+export async function POST(req: Request) {
     const payload = await req.json();
     const headersList = headers();
     const heads = {
@@ -25,6 +33,7 @@ async function handler(req: Request) {
         return NextResponse.json({}, { status: 400 })
     }
 
+    try {
     const eventType: EventType = evt.type
     const { id, first_name, last_name, image_url } = evt.data
 
@@ -46,15 +55,11 @@ async function handler(req: Request) {
         })
     }
 
-    type EventType = "user.created" | "user.deleted" | "*"
+    return NextResponse.json({ok: true} , {status : 200})
 
-    type Event = {
-        data: Record<string, string | number>,
-        object: "event",
-        type: EventType
+    } catch (error) {
+        console.log(error)
+        return NextResponse.json({ok : false} ,{status : 500})
     }
 }
 
-
-export const GET = handler
-export const POST = handler
