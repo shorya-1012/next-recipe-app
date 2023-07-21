@@ -44,7 +44,7 @@ const page = async () => {
         <div className="w-screen overflow-x-hidden flex flex-col items-center">
             <div className="flex gap-6 place-self-start px-5 pb-3 mx-2 my-5 overflow-x-scroll border-b-[1px] w-full border-gray-500 scrollbar-hide">
                 {
-                    followdAccounts.map(account => {
+                    followedAccounts.map(account => {
                         return (
                             <Link key={account.id} href={`/user/${account.following.id}`}>
                                 <div className="flex flex-col items-center gap-2">
