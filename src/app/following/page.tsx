@@ -3,20 +3,17 @@ import {Avatar, AvatarImage, AvatarFallback} from "@/components/ui/Avatar"
 import UserPostCard from "@/components/UserPostCard"
 import {auth} from "@clerk/nextjs"
 import Link from "next/link"
+import {notFound, redirect} from "next/navigation"
 
 const page = async () => {
 
     const {userId} = auth()
 
     if (!userId) {
-        return (
-            <div>
-                <h1>You aren't signed in</h1>
-            </div>
-        )
+        redirect('/')
     }
 
-    const followdAccounts = await prisma.follows.findMany({
+    const followedAccounts = await prisma.follows.findMany({
         where: {
             followerId: userId
         },
@@ -25,7 +22,11 @@ const page = async () => {
         }
     })
 
-    const followingAccountId = followdAccounts.map(acc => acc.followingId)
+    if (followedAccounts.length === 0) {
+        notFound()
+    }
+
+    const followingAccountId = followedAccounts.map(acc => acc.followingId)
 
     const followingPosts = await prisma.post.findMany({
         where: {

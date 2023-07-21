@@ -2,9 +2,11 @@ import {FaUsersSlash} from "react-icons/fa"
 
 const NotFound = () => {
     return (
-        <div className="w-screen h-screen font-nunito overflow-hidden flex flex-col justify-center items-center">
-            <FaUsersSlash size={100} />
-            <h1 className="text-5xl font-semibold">Your are not following any one</h1>
+        <div className="w-screen h-screen overflow-hidden flex flex-col justify-center items-center font-nunito mb-10">
+            <FaUsersSlash size={'120px'} />
+            <div className="px-4 text-center mt-10">
+                <h1 className="text-2xl font-semibold">You are not following anyone</h1>
+            </div>
         </div>
     )
 }

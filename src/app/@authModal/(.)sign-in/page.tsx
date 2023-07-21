@@ -1,7 +1,15 @@
 import CloseModalButton from "@/components/CloseModalButton"
 import {SignIn} from "@clerk/nextjs"
+import {auth} from "@clerk/nextjs"
+import {redirect} from "next/navigation"
 
 const page = () => {
+    const {userId} = auth()
+
+    if (userId) {
+        redirect('/')
+    }
+
     return (
         <div className='w-screen h-screen flex justify-center items-center fixed inset-0 bg-zinc-900/20 z-10'>
             <div className="bg-white rounded-xl flex items-center w-lg mx-auto">
